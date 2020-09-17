@@ -4,6 +4,9 @@ QTaudio testing with UI
 
 ermagherd - plugin cpp has the stuff you need, do not touch main.cpp and its CMakelist
 
+Messy, and has only got QAudioDeviceInfo compiled. Need to check QDebug output on device.
+
+
 ## License
 
 Copyright (C) 2020  Kaputnik Go
