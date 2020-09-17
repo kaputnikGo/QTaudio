@@ -1,4 +1,8 @@
 {
-    "policy_groups": [],
+    "policy_groups": [
+      "webview",
+      "audio",
+      "networking"
+    ],
     "policy_version": 16.04
 }

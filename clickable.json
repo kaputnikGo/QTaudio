@@ -1,9 +1,5 @@
 {
   "clickable_minimum_required": "6.12.2",
   "builder": "cmake",
-  "kill": "QTaudio",
-  "build_args": "QT+=multimedia",
-    "dependencies_target": [
-        "qtmultimedia5-dev"
-    ]
+  "kill": "QTaudio"
 }
