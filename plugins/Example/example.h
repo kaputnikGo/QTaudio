@@ -27,7 +27,7 @@ class Example: public QObject {
 public:
     Example();
     ~Example() = default;
-
+    //void device();
     Q_INVOKABLE void speak();
 };
 

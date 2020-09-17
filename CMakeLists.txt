@@ -6,7 +6,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 find_package(Qt5Core)
 find_package(Qt5Qml)
 find_package(Qt5Quick)
-find_package(Qt5Multimedia)
 
 # Automatically create moc files
 set(CMAKE_AUTOMOC ON)

@@ -5,7 +5,9 @@ QTaudio testing with UI
 ermagherd - plugin cpp has the stuff you need, do not touch main.cpp and its CMakelist
 
 Messy, and has only got QAudioDeviceInfo compiled. Need to check QDebug output on device.
-installation failed.
+Needs to be built for Pinephone as:
+$ clickable --arch amd64
+which generates an aarch64-linux-gnu folder in app/build
 
 ## License
 

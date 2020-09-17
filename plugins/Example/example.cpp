@@ -15,7 +15,7 @@
  */
 
 #include <QDebug>
-#include <QAudioDeviceInfo>
+//#include <QAudioDeviceInfo>
 //#include <QtMultimedia>
 
 #include "example.h"
@@ -26,12 +26,21 @@ Example::Example() {
 
 void Example::speak() {
     qDebug() << "hello world!";
-    qDebug() << "check audio output devices:";
-    // testing
-    const auto deviceInfos = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
-    for (const QAudioDeviceInfo &deviceInfo : deviceInfos)
-      qDebug() << "Device name: " << deviceInfo.deviceName();
-
-      // QML logging only, not C++
-      // console.log("Device name: " + deviceInfo.deviceName());
 }
+
+/*
+void Example::device() {
+  qDebug() << "check audio output devices:";
+  // testing
+  //const auto deviceInfos = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+/*
+  for (const QAudioDeviceInfo &deviceInfo : deviceInfos) {
+    qDebug() << "Device name: " << deviceInfo.deviceName();
+    //char device[] = deviceInfo.deviceName();
+  }
+  */
+    // QML logging only, not C++
+    // console.log("Device name: " + deviceInfo.deviceName());
+    /*
+}
+*/

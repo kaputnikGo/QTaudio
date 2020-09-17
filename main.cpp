@@ -19,7 +19,6 @@
 #include <QUrl>
 #include <QString>
 #include <QQuickView>
-#include <QSettings>
 // find the QAudio stuff..
 //#include <QtMultimedia>
 //#include <QAudio>
