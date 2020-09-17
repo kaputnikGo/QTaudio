@@ -9,6 +9,11 @@ Needs to be built for Pinephone as:
 $ clickable --arch amd64
 which generates an aarch64-linux-gnu folder in app/build
 
+QTaudio has the working code now, with 2 buttons and audiodevices, text change
+QTtemplate is the back up version.
+have QAudioDeviceInfo import but no QDebug log output visible, print something to screen.
+Sort the layout to pin all the elements to the top.
+
 ## License
 
 Copyright (C) 2020  Kaputnik Go

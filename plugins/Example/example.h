@@ -18,8 +18,6 @@
 #define EXAMPLE_H
 
 #include <QObject>
-#include <QAudioDeviceInfo>
-#include <QtMultimedia>
 
 class Example: public QObject {
     Q_OBJECT
@@ -27,8 +25,9 @@ class Example: public QObject {
 public:
     Example();
     ~Example() = default;
-    //void device();
+
     Q_INVOKABLE void speak();
+    Q_INVOKABLE void devices();
 };
 
 #endif

@@ -5,7 +5,7 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; version 3.
  *
- * QTaudio is distributed in the hope that it will be useful,
+ * QTtemplate is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -19,8 +19,7 @@ import Ubuntu.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
-import QtMultimedia 5.15
-// this is the plugin include
+
 import Example 1.0
 
 MainView {
@@ -30,7 +29,7 @@ MainView {
     automaticOrientation: true
 
     width: units.gu(45)
-    height: units.gu(75)
+    height: units.gu(100)
 
     Page {
         anchors.fill: parent
@@ -41,35 +40,41 @@ MainView {
         }
 
         ColumnLayout {
-          spacing: units.gu(2)
-          anchors {
-              margins: units.gu(2)
-              top: header.bottom
-              left: parent.left
-              right: parent.right
-              bottom: parent.bottom
-          }
+            spacing: units.gu(2)
+            anchors {
+                margins: units.gu(2)
+                top: header.bottom
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+            }
 
-          Item {
-              Layout.fillHeight: true
-          }
+            Label {
+                id: label
+                Layout.alignment: Qt.AlignHCenter
+                text: i18n.tr('Press the BUTTON below and check the logs!')
+            }
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                text: i18n.tr('Press here!')
+                color: UbuntuColors.graphite
+                onClicked: Example.speak()
+            }
 
-          Label {
-              id: label
-              Layout.alignment: Qt.AlignHCenter
-              text: i18n.tr('Press the button below and check the logs!')
-          }
-
-          Button {
-              Layout.alignment: Qt.AlignHCenter
-              text: i18n.tr('Press here!')
-              onClicked: Example.speak()
-          }
-
-          Item {
-              Layout.fillHeight: true
-          }
-
+            Label {
+                id: label2
+                Layout.alignment: Qt.AlignHCenter
+                text: i18n.tr('Its a new line of text above BUTTON2')
+            }
+            Button {
+                Layout.alignment: Qt.AlignHCenter
+                text: i18n.tr('BUTTON2')
+                color: UbuntuColors.warmGrey
+                onClicked: {
+                  label2.text = "BUTTON2 was clicked."
+                  Example.devices()
+                }
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qtaudio.kaputnikgo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-17 10:09+0000\n"
+"POT-Creation-Date: 2020-09-17 12:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:40 QTaudio.desktop.in.h:1
+#: ../qml/Main.qml:39 QTaudio.desktop.in.h:1
 msgid "QTaudio"
 msgstr ""
 
-#: ../qml/Main.qml:60
-msgid "Press the button below and check the logs!"
+#: ../qml/Main.qml:55
+msgid "Press the BUTTON below and check the logs!"
 msgstr ""
 
-#: ../qml/Main.qml:65
+#: ../qml/Main.qml:59
 msgid "Press here!"
+msgstr ""
+
+#: ../qml/Main.qml:67
+msgid "Its a new line of text above BUTTON2"
+msgstr ""
+
+#: ../qml/Main.qml:71
+msgid "BUTTON2"
 msgstr ""
