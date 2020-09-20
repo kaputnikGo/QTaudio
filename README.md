@@ -33,8 +33,10 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 use amixer set volume instead, on: 85% and off: 2%
 possibly too high for headphones as not sure if vol control on device works for it.
-code up a volume bar in app
-do some GUI already
+
+code up a volume bar in app and do some GUI already
+
+include mute/unmute, volume sliders and button/text updates with info
 
 
 ## License

@@ -48,14 +48,23 @@ MainView {
                 right: parent.right
                 bottom: parent.bottom
             }
-
+// HEADPHONES MUTE CONTROL
             Label {
                 id: label1
+                anchors {
+                  top: header.bottom
+                  topMargin: 8
+                }
                 Layout.alignment: Qt.AlignHCenter
                 text: i18n.tr('Press BUTTON1 for headphones')
             }
             Button {
+                id: button1
                 Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label1.bottom
+                  topMargin: 8
+                }
                 text: i18n.tr('BUTTON1')
                 color: UbuntuColors.graphite
                 onClicked: {
@@ -63,20 +72,48 @@ MainView {
                   label1.text = "BUTTON1: unmute headphones, mute speakers."
                 }
             }
-
+// SPEAKERS MUTE CONTROL
             Label {
                 id: label2
                 Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: button1.bottom
+                  topMargin: 24
+                }
                 text: i18n.tr('Press Button2 for speakers')
             }
             Button {
+                id: button2
                 Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label2.bottom
+                  topMargin: 8
+                }
                 text: i18n.tr('BUTTON2')
                 color: UbuntuColors.warmGrey
                 onClicked: {
                   Example.speakers()
                   label2.text = "BUTTON2: mute headphones, unmute speakers."
                 }
+            }
+// add volume controls here
+            Label {
+                id: label3
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: button2.bottom
+                  topMargin: 24
+                }
+                text: i18n.tr('Volume slider for headphones')
+            }
+            Label {
+                id: label4
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label3.bottom
+                  topMargin: 24
+                }
+                text: i18n.tr('Volume slider for speakers')
             }
         }
     }

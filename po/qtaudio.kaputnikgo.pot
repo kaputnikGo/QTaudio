@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qtaudio.kaputnikgo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-20 11:24+0000\n"
+"POT-Creation-Date: 2020-09-20 13:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,18 +21,26 @@ msgstr ""
 msgid "QTaudio"
 msgstr ""
 
-#: ../qml/Main.qml:55
+#: ../qml/Main.qml:59
 msgid "Press BUTTON1 for headphones"
 msgstr ""
 
-#: ../qml/Main.qml:59
+#: ../qml/Main.qml:70
 msgid "BUTTON1"
 msgstr ""
 
-#: ../qml/Main.qml:70
+#: ../qml/Main.qml:85
 msgid "Press Button2 for speakers"
 msgstr ""
 
-#: ../qml/Main.qml:74
+#: ../qml/Main.qml:94
 msgid "BUTTON2"
+msgstr ""
+
+#: ../qml/Main.qml:109
+msgid "Volume slider for headphones"
+msgstr ""
+
+#: ../qml/Main.qml:118
+msgid "Volume slider for speakers"
 msgstr ""
