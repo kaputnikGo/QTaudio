@@ -7,7 +7,7 @@ amixer volume and unmute for headphones and speakers is WORKING
 ermagherd - plugin cpp has the stuff you need, do not touch main.cpp and its CMakelist
 
 Needs to be built for Pinephone as (with optional ssh install):
-$ clickable --arch arm64 --ssh <host ip>
+$ clickable --arch arm64 --ssh [ip addr]
 
 which generates an aarch64-linux-gnu folder in app/build
 
@@ -20,14 +20,16 @@ Sort the layout to pin all the elements to the top.
 ====================
 
 headphone/speaker amixer script added and installed, was running with error:
+
 Failed to vibrate with pattern: "An AppArmor policy prevents this sender from sending this message to this recipient; type=\"method_call\", sender=\":1.245\" (uid=32011 pid=17604 comm=\"QTaudio \") interface=\"com.lomiri.hfd.Vibrator\" member=\"vibrate\" error name=\"(unset)\" requested_reply=\"0\" destination=\"com.lomiri.hfd\" (uid=0 pid=1948 comm=\"hfd-service \")"
 
 needed to get around this spurious, PITA error with:
 QTaudio.apparmor { "template": "unconfined", ... }
 
 =====================
+
 to get .sh echo (and errors) use after install on device:
-$ clickable --arch arm64 --ssh <ipaddr> log
+$ clickable --arch arm64 --ssh [ipaddr] log
 
 use amixer set volume instead, on: 85% and off: 2%
 possibly too high for headphones as not sure if vol control on device works for it.
