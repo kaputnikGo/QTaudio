@@ -19,10 +19,6 @@
 #include <QUrl>
 #include <QString>
 #include <QQuickView>
-// find the QAudio stuff..
-//#include <QtMultimedia>
-//#include <QAudio>
-//#include <QAudioDeviceInfo>
 
 int main(int argc, char *argv[])
 {

@@ -1,8 +1,8 @@
 {
+    "template": "unconfined",
     "policy_groups": [
-      "webview",
       "audio",
-      "networking"
+      "microphone"
     ],
     "policy_version": 16.04
 }

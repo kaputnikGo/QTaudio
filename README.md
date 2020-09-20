@@ -5,14 +5,27 @@ QTaudio testing with UI
 ermagherd - plugin cpp has the stuff you need, do not touch main.cpp and its CMakelist
 
 Messy, and has only got QAudioDeviceInfo compiled. Need to check QDebug output on device.
-Needs to be built for Pinephone as:
-$ clickable --arch amd64
+Needs to be built for Pinephone as (with optional ssh install):
+$ clickable --arch amd64 --ssh <host ip>
 which generates an aarch64-linux-gnu folder in app/build
 
 QTaudio has the working code now, with 2 buttons and audiodevices, text change
 QTtemplate is the back up version.
 have QAudioDeviceInfo import but no QDebug log output visible, print something to screen.
 Sort the layout to pin all the elements to the top.
+
+headphone/speaker amixer script added and installed, runs with error:
+Failed to vibrate with pattern: "An AppArmor policy prevents this sender from sending this message to this recipient; type=\"method_call\", sender=\":1.245\" (uid=32011 pid=17604 comm=\"QTaudio \") interface=\"com.lomiri.hfd.Vibrator\" member=\"vibrate\" error name=\"(unset)\" requested_reply=\"0\" destination=\"com.lomiri.hfd\" (uid=0 pid=1948 comm=\"hfd-service \")"
+
+
+needed to get around this spurious, PITA error with:
+QTaudio.apparmor { "template": "unconfined", ... }
+
+
+use amixer set volume instead, on: 85% and off: 2%
+possibly too high for headphones as not sure if vol control on device works for it.
+code up a volume bar in app
+
 
 ## License
 

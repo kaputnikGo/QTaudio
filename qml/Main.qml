@@ -50,29 +50,32 @@ MainView {
             }
 
             Label {
-                id: label
+                id: label1
                 Layout.alignment: Qt.AlignHCenter
-                text: i18n.tr('Press the BUTTON below and check the logs!')
+                text: i18n.tr('Press BUTTON1 for headphones')
             }
             Button {
                 Layout.alignment: Qt.AlignHCenter
-                text: i18n.tr('Press here!')
+                text: i18n.tr('BUTTON1')
                 color: UbuntuColors.graphite
-                onClicked: Example.speak()
+                onClicked: {
+                  Example.headphones()
+                  label1.text = "BUTTON1: unmute headphones, mute speakers."
+                }
             }
 
             Label {
                 id: label2
                 Layout.alignment: Qt.AlignHCenter
-                text: i18n.tr('Its a new line of text above BUTTON2')
+                text: i18n.tr('Press Button2 for speakers')
             }
             Button {
                 Layout.alignment: Qt.AlignHCenter
                 text: i18n.tr('BUTTON2')
                 color: UbuntuColors.warmGrey
                 onClicked: {
-                  label2.text = "BUTTON2 was clicked."
-                  Example.devices()
+                  Example.speakers()
+                  label2.text = "BUTTON2: mute headphones, unmute speakers."
                 }
             }
         }

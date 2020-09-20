@@ -18,16 +18,27 @@
 #define EXAMPLE_H
 
 #include <QObject>
+#include <QProcess>
 
 class Example: public QObject {
     Q_OBJECT
 
-public:
+  public:
     Example();
     ~Example() = default;
 
-    Q_INVOKABLE void speak();
-    Q_INVOKABLE void devices();
+    Q_INVOKABLE void speakers();
+    Q_INVOKABLE void headphones();
+
+  private Q_SLOTS:
+    void onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onSpeakerFinished(int exitCode, QProcess::ExitStatus exitStatus);
+
+
+  private:
+    QProcess headphoneProcess;
+    QProcess speakerProcess;
+
 };
 
 #endif
