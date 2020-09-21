@@ -38,6 +38,9 @@ code up a volume bar in app and do some GUI already
 
 include mute/unmute, volume sliders and button/text updates with info
 
+get volume info:
+headphoneVolProcess.readAllStandardOutput(); // get stdout
+
 
 ## License
 

@@ -96,7 +96,7 @@ MainView {
                   label2.text = "BUTTON2: mute headphones, unmute speakers."
                 }
             }
-// add volume controls here
+// READ HEADPHONE VOLUME
             Label {
                 id: label3
                 Layout.alignment: Qt.AlignHCenter
@@ -104,16 +104,45 @@ MainView {
                   top: button2.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('Volume slider for headphones')
+                text: i18n.tr('Read volume for headphones')
             }
+            Button {
+                id: button3
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label3.bottom
+                  topMargin: 8
+                }
+                text: i18n.tr('BUTTON3')
+                color: UbuntuColors.warmGrey
+                onClicked: {
+                  Example.readHeadphoneVol()
+                  label3.text = "BUTTON3: read headphone volume."
+                }
+            }
+// READ SPEAKER VOLUME
             Label {
                 id: label4
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: label3.bottom
+                  top: button3.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('Volume slider for speakers')
+                text: i18n.tr('Read volume for speakers')
+            }
+            Button {
+                id: button4
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label4.bottom
+                  topMargin: 8
+                }
+                text: i18n.tr('BUTTON4')
+                color: UbuntuColors.warmGrey
+                onClicked: {
+                  Example.readSpeakerVol()
+                  label4.text = "BUTTON4: read speaker volume."
+                }
             }
         }
     }

@@ -24,11 +24,15 @@ using namespace std;
 
 Example::Example() :
   headphoneProcess(),
-  speakerProcess()
+  speakerProcess(),
+  headphoneVolProcess(),
+  speakerVolProcess()
 {
     // maybe
     connect(&headphoneProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneFinished(int, QProcess::ExitStatus)));
     connect(&speakerProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onSpeakerFinished(int, QProcess::ExitStatus)));
+    connect(&headphoneVolProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneVolFinished(int, QProcess::ExitStatus)));
+    connect(&speakerVolProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onSpeakerVolFinished(int, QProcess::ExitStatus)));
 }
 
 void Example::speakers() {
@@ -44,7 +48,6 @@ void Example::speakers() {
     }
     */
 }
-
 void Example::headphones() {
     // called from BUTTON1: unmute headphones, mute speakers.
     qDebug() << "headphones on";
@@ -52,14 +55,38 @@ void Example::headphones() {
     headphoneProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphones.sh");
 }
 
+void Example::readHeadphoneVol() {
+    qDebug() << "headphone vol read";
+    headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
+    headphoneVolProcess.waitForFinished();
+    QString volRead(headphoneVolProcess.readAllStandardOutput());
+    headphoneVolProcess.close();
+    qDebug() << volRead;
+}
+void Example::readSpeakerVol() {
+    qDebug() << "speaker vol read";
+    speakerVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speaker_vol.sh");
+    speakerVolProcess.waitForFinished();
+    QString volRead(speakerVolProcess.readAllStandardOutput());
+    speakerVolProcess.close();
+    // reads "71\n" - so need to strip newline char
+    qDebug() << volRead;
+}
+
+
 void Example::onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     qDebug() << "Headphone on finished";
     qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
 }
-
-
 void Example::onSpeakerFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     qDebug() << "Speaker on finished";
     qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
-
+}
+void Example::onHeadphoneVolFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Headphone Vol read finished";
+    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
+}
+void Example::onSpeakerVolFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Speaker Vol read finished";
+    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
 }

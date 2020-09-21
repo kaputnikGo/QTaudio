@@ -29,15 +29,21 @@ class Example: public QObject {
 
     Q_INVOKABLE void speakers();
     Q_INVOKABLE void headphones();
+    Q_INVOKABLE void readHeadphoneVol();
+    Q_INVOKABLE void readSpeakerVol();
 
   private Q_SLOTS:
     void onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onSpeakerFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onHeadphoneVolFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onSpeakerVolFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
 
   private:
     QProcess headphoneProcess;
     QProcess speakerProcess;
+    QProcess headphoneVolProcess;
+    QProcess speakerVolProcess;
 
 };
 
