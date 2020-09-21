@@ -22,6 +22,7 @@
 
 class Example: public QObject {
     Q_OBJECT
+    Q_PROPERTY(QString headphoneVolRead READ getHeadphoneVol WRITE setHeadphoneVol NOTIFY headphoneVolChanged)
 
   public:
     Example();
@@ -32,18 +33,25 @@ class Example: public QObject {
     Q_INVOKABLE void readHeadphoneVol();
     Q_INVOKABLE void readSpeakerVol();
 
+    QString getHeadphoneVol();
+    void setHeadphoneVol(const QString &t);
+
   private Q_SLOTS:
     void onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onSpeakerFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onHeadphoneVolFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onSpeakerVolFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
+  signals:
+    void headphoneVolChanged();
 
   private:
     QProcess headphoneProcess;
     QProcess speakerProcess;
     QProcess headphoneVolProcess;
     QProcess speakerVolProcess;
+    QString headphoneVolRead;
+
 
 };
 

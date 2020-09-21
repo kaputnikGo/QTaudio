@@ -26,7 +26,8 @@ Example::Example() :
   headphoneProcess(),
   speakerProcess(),
   headphoneVolProcess(),
-  speakerVolProcess()
+  speakerVolProcess(),
+  headphoneVolRead("0")
 {
     // maybe
     connect(&headphoneProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneFinished(int, QProcess::ExitStatus)));
@@ -59,18 +60,33 @@ void Example::readHeadphoneVol() {
     qDebug() << "headphone vol read";
     headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
     headphoneVolProcess.waitForFinished();
-    QString volRead(headphoneVolProcess.readAllStandardOutput());
+    headphoneVolRead = QString(headphoneVolProcess.readAllStandardOutput());
     headphoneVolProcess.close();
-    qDebug() << volRead;
+    qDebug() << headphoneVolRead;
 }
 void Example::readSpeakerVol() {
     qDebug() << "speaker vol read";
     speakerVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speaker_vol.sh");
     speakerVolProcess.waitForFinished();
-    QString volRead(speakerVolProcess.readAllStandardOutput());
+    QString volRead = QString(speakerVolProcess.readAllStandardOutput());
     speakerVolProcess.close();
     // reads "71\n" - so need to strip newline char
     qDebug() << volRead;
+}
+
+QString Example::getHeadphoneVol() {
+    return headphoneVolRead;
+}
+void Example::setHeadphoneVol(const QString &t) {
+    // Check for valid number.
+    /*
+    if (!_types.contains(t))
+        return;
+    */
+    if (t != headphoneVolRead) {
+        headphoneVolRead = t;
+        emit headphoneVolChanged();
+    }
 }
 
 
