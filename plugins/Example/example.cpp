@@ -27,7 +27,8 @@ Example::Example() :
   speakerProcess(),
   headphoneVolProcess(),
   speakerVolProcess(),
-  headphoneVolRead("0")
+  headphoneVolRead('0'),
+  speakerVolRead('0')
 {
     // maybe
     connect(&headphoneProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneFinished(int, QProcess::ExitStatus)));
@@ -37,10 +38,12 @@ Example::Example() :
 }
 
 void Example::speakers() {
-    // called from BUTTON2: mute headphones, unmute speakers.
+    // called from qml button: headphones vol 2%, speakers 85%
     qDebug() << "speakers on";
     // hardcoded location bad ...
     speakerProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speakers.sh");
+    speakerProcess.waitForFinished();
+    speakerProcess.close();
     /*
     const auto deviceInfos = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
 
@@ -48,12 +51,16 @@ void Example::speakers() {
       qDebug() << "Device name: " << deviceInfo.deviceName();
     }
     */
+    //readSpeakerVol();
 }
 void Example::headphones() {
-    // called from BUTTON1: unmute headphones, mute speakers.
+    // called from qml button: unmute headphones vol 85%, speakers 2%.
     qDebug() << "headphones on";
     // hardcode location bad...
     headphoneProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphones.sh");
+    headphoneProcess.waitForFinished();
+    headphoneProcess.close();
+    //readHeadphoneVol();
 }
 
 void Example::readHeadphoneVol() {
@@ -61,6 +68,8 @@ void Example::readHeadphoneVol() {
     headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
     headphoneVolProcess.waitForFinished();
     headphoneVolRead = QString(headphoneVolProcess.readAllStandardOutput());
+    // strip /n
+    headphoneVolRead.chop(1);
     headphoneVolProcess.close();
     qDebug() << headphoneVolRead;
 }
@@ -68,27 +77,53 @@ void Example::readSpeakerVol() {
     qDebug() << "speaker vol read";
     speakerVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speaker_vol.sh");
     speakerVolProcess.waitForFinished();
-    QString volRead = QString(speakerVolProcess.readAllStandardOutput());
+    speakerVolRead = QString(speakerVolProcess.readAllStandardOutput());
+    // strip /n
+    speakerVolRead.chop(1);
     speakerVolProcess.close();
-    // reads "71\n" - so need to strip newline char
-    qDebug() << volRead;
+    qDebug() << speakerVolRead;
 }
 
 QString Example::getHeadphoneVol() {
+    headphones();
+    qDebug() << "getHeadphoneVol: " << headphoneVolRead;
+    qDebug() << "headphone vol read";
+    headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
+    headphoneVolProcess.waitForFinished();
+    headphoneVolRead = QString(headphoneVolProcess.readAllStandardOutput());
+    // strip /n
+    headphoneVolRead.chop(1);
+    headphoneVolProcess.close();
+    qDebug() << headphoneVolRead;
     return headphoneVolRead;
 }
 void Example::setHeadphoneVol(const QString &t) {
-    // Check for valid number.
-    /*
-    if (!_types.contains(t))
-        return;
-    */
+    // check t is in range and is number
     if (t != headphoneVolRead) {
         headphoneVolRead = t;
         emit headphoneVolChanged();
     }
 }
-
+QString Example::getSpeakerVol() {
+    speakers();
+    qDebug() << "getSpeakerVol: " << speakerVolRead;
+    qDebug() << "speaker vol read";
+    speakerVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speaker_vol.sh");
+    speakerVolProcess.waitForFinished();
+    speakerVolRead = QString(speakerVolProcess.readAllStandardOutput());
+    // strip /n
+    speakerVolRead.chop(1);
+    speakerVolProcess.close();
+    qDebug() << speakerVolRead;
+    return speakerVolRead;
+}
+void Example::setSpeakerVol(const QString &t) {
+    // check t i sin range and is number
+    if (t != speakerVolRead) {
+        speakerVolRead = t;
+        emit speakerVolChanged();
+    }
+}
 
 void Example::onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     qDebug() << "Headphone on finished";

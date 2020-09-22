@@ -4,6 +4,8 @@ QTaudio testing with UI
 
 amixer volume and unmute for headphones and speakers is WORKING
 
+Simple 2 button operation turns sets headphone or speaker volumes
+
 ermagherd - plugin cpp has the stuff you need, do not touch main.cpp and its CMakelist
 
 Needs to be built for Pinephone as (with optional ssh install):
@@ -16,6 +18,10 @@ QTtemplate is the back up version.
 
 have QAudioDeviceInfo import but no QDebug log output visible, print something to screen.
 Sort the layout to pin all the elements to the top.
+
+Cannot install over ssh if app is already running on device, must exit it first.
+
+Audio file (ogg) include but for some reason wont play at button click.
 
 ====================
 
@@ -40,6 +46,12 @@ include mute/unmute, volume sliders and button/text updates with info
 
 get volume info:
 headphoneVolProcess.readAllStandardOutput(); // get stdout
+
+add a mic control
+
+also mute: $ amixer -c 0 set [audio i/o] mute
+
+package naming and make proper for release
 
 
 ## License

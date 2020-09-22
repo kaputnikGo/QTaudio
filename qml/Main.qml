@@ -19,6 +19,7 @@ import Ubuntu.Components 1.3
 //import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
+import QtMultimedia 5.4
 
 import Example 1.0
 
@@ -32,7 +33,13 @@ MainView {
     height: units.gu(100)
 
     Page {
+        id: page1
         anchors.fill: parent
+
+        MediaPlayer {
+            id: clickSound
+            source: "../assets/Stapler-sfx.ogg"
+        }
 
         header: PageHeader {
             id: header
@@ -47,16 +54,17 @@ MainView {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
+                topMargin: 24
             }
-// HEADPHONES MUTE CONTROL
+// HEADPHONES ENABLE
             Label {
                 id: label1
                 anchors {
-                  top: header.bottom
-                  topMargin: 8
+                  top: parent.top
+                  topMargin: 24
                 }
                 Layout.alignment: Qt.AlignHCenter
-                text: i18n.tr('Press BUTTON1 for headphones')
+                text: i18n.tr('Press to enable headphones')
             }
             Button {
                 id: button1
@@ -65,46 +73,43 @@ MainView {
                   top: label1.bottom
                   topMargin: 8
                 }
-                text: i18n.tr('BUTTON1')
+                text: i18n.tr('Headphones')
                 color: UbuntuColors.graphite
                 onClicked: {
-                  Example.headphones()
-                  label1.text = "BUTTON1: unmute headphones, mute speakers."
+                  clickSound.play()
+                  //Example.headphones()
+                  label1.text = "headphones unmute vol 85%, speakers vol 2%."
+                  button1.color = UbuntuColors.green
+                  button3.color = UbuntuColors.graphite
+                  // clear previous display
+                  label3.text = "Press to enable speakers"
+                  label4.text = "display speaker volume"
+                  // update readvol text
+                  //Example.readHeadphoneVol()
+                  label2.text = "current headphone volume: " + Example.getHeadphoneVol()
                 }
             }
-// SPEAKERS MUTE CONTROL
+// DISPLAY HEADPHONE VOLUME
             Label {
                 id: label2
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
                   top: button1.bottom
-                  topMargin: 24
-                }
-                text: i18n.tr('Press Button2 for speakers')
-            }
-            Button {
-                id: button2
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: label2.bottom
                   topMargin: 8
                 }
-                text: i18n.tr('BUTTON2')
-                color: UbuntuColors.warmGrey
-                onClicked: {
-                  Example.speakers()
-                  label2.text = "BUTTON2: mute headphones, unmute speakers."
-                }
+                text: i18n.tr('display headphone volume')
             }
-// READ HEADPHONE VOLUME
+//
+// SPEAKERS ENABLE
+//
             Label {
                 id: label3
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: button2.bottom
+                  top: label2.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('Read volume for headphones')
+                text: i18n.tr('Press to enable speakers')
             }
             Button {
                 id: button3
@@ -113,14 +118,24 @@ MainView {
                   top: label3.bottom
                   topMargin: 8
                 }
-                text: i18n.tr('BUTTON3')
-                color: UbuntuColors.warmGrey
+                text: i18n.tr('Speakers')
+                color: UbuntuColors.graphite
                 onClicked: {
-                  Example.readHeadphoneVol()
-                  label3.text = "BUTTON3: read headphone volume."
+                  clickSound.play()
+                  //Example.speakers()
+                  label3.text = "headphones vol 2%, speakers vol 85%."
+                  button3.color = UbuntuColors.green
+                  button1.color = UbuntuColors.graphite
+                  // clear previous display
+                  label1.text = "Press to enable headphones"
+                  label2.text = "display headphone volume"
+                  // update speaker vol text
+                  //Example.readSpeakerVol()
+                  // is getting old value (3), needs to be pressed again to update
+                  label4.text = "current speaker volume: " + Example.getSpeakerVol()
                 }
             }
-// READ SPEAKER VOLUME
+// DISPLAY SPEAKER VOL
             Label {
                 id: label4
                 Layout.alignment: Qt.AlignHCenter
@@ -128,21 +143,7 @@ MainView {
                   top: button3.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('Read volume for speakers')
-            }
-            Button {
-                id: button4
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: label4.bottom
-                  topMargin: 8
-                }
-                text: i18n.tr('BUTTON4')
-                color: UbuntuColors.warmGrey
-                onClicked: {
-                  Example.readSpeakerVol()
-                  label4.text = "BUTTON4: read speaker volume."
-                }
+                text: i18n.tr('display speaker volume')
             }
         }
     }
