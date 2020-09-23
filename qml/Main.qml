@@ -131,7 +131,6 @@ MainView {
                   label2.text = "display headphone volume"
                   // update speaker vol text
                   //Example.readSpeakerVol()
-                  // is getting old value (3), needs to be pressed again to update
                   label4.text = "current speaker volume: " + Example.getSpeakerVol()
                 }
             }
@@ -144,6 +143,65 @@ MainView {
                   topMargin: 24
                 }
                 text: i18n.tr('display speaker volume')
+            }
+//
+// MIC MUTE/UNMUTE
+//
+            Label {
+                id: label5
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label4.bottom
+                  topMargin: 24
+                }
+                text: i18n.tr('Press to mute all mics')
+            }
+            Button {
+                id: button5
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label5.bottom
+                  topMargin: 8
+                }
+                text: i18n.tr('Mic mute')
+                color: UbuntuColors.graphite
+                onClicked: {
+                  clickSound.play()
+                  Example.micMute()
+                  label5.text = "all mics muted."
+                  button5.color = UbuntuColors.green
+                  button6.color = UbuntuColors.graphite
+                  // clear previous display
+                  label6.text = "Press to unmute all mics"
+                }
+            }
+            Label {
+                id: label6
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: button5.bottom
+                  topMargin: 24
+                }
+                text: i18n.tr('Press to unmute all mics')
+            }
+            Button {
+                id: button6
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label6.bottom
+                  topMargin: 8
+                }
+                text: i18n.tr('Mic unmute')
+                color: UbuntuColors.graphite
+                onClicked: {
+                  clickSound.play()
+                  Example.micUnmute()
+                  label6.text = "all mics unmuted."
+                  button6.color = UbuntuColors.green
+                  button5.color = UbuntuColors.graphite
+                  // clear previous display
+                  label5.text = "Press to mute all mics"
+                }
             }
         }
     }

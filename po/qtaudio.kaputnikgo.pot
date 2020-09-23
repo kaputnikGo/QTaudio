@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qtaudio.kaputnikgo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-22 07:07+0000\n"
+"POT-Creation-Date: 2020-09-23 02:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,22 @@ msgstr ""
 msgid "Speakers"
 msgstr ""
 
-#: ../qml/Main.qml:146
+#: ../qml/Main.qml:145
 msgid "display speaker volume"
+msgstr ""
+
+#: ../qml/Main.qml:157
+msgid "Press to mute all mics"
+msgstr ""
+
+#: ../qml/Main.qml:166
+msgid "Mic mute"
+msgstr ""
+
+#: ../qml/Main.qml:185
+msgid "Press to unmute all mics"
+msgstr ""
+
+#: ../qml/Main.qml:194
+msgid "Mic unmute"
 msgstr ""

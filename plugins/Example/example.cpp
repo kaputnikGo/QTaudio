@@ -27,16 +27,23 @@ Example::Example() :
   speakerProcess(),
   headphoneVolProcess(),
   speakerVolProcess(),
+  micMuteProcess(),
+  micUnmuteProcess(),
   headphoneVolRead('0'),
-  speakerVolRead('0')
+  speakerVolRead('0'),
+  micMutesRead('0')
 {
-    // maybe
     connect(&headphoneProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneFinished(int, QProcess::ExitStatus)));
     connect(&speakerProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onSpeakerFinished(int, QProcess::ExitStatus)));
     connect(&headphoneVolProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneVolFinished(int, QProcess::ExitStatus)));
     connect(&speakerVolProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onSpeakerVolFinished(int, QProcess::ExitStatus)));
+    connect(&micMuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMicMuteFinished(int, QProcess::ExitStatus)));
+    connect(&micUnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMicUnmuteFinished(int, QProcess::ExitStatus)));
 }
 
+// TODO :: cldean up this mess :)
+
+/******************************************************************************/
 void Example::speakers() {
     // called from qml button: headphones vol 2%, speakers 85%
     qDebug() << "speakers on";
@@ -44,6 +51,8 @@ void Example::speakers() {
     speakerProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speakers.sh");
     speakerProcess.waitForFinished();
     speakerProcess.close();
+
+    // not bothering with QAudio any more?
     /*
     const auto deviceInfos = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
 
@@ -52,26 +61,6 @@ void Example::speakers() {
     }
     */
     //readSpeakerVol();
-}
-void Example::headphones() {
-    // called from qml button: unmute headphones vol 85%, speakers 2%.
-    qDebug() << "headphones on";
-    // hardcode location bad...
-    headphoneProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphones.sh");
-    headphoneProcess.waitForFinished();
-    headphoneProcess.close();
-    //readHeadphoneVol();
-}
-
-void Example::readHeadphoneVol() {
-    qDebug() << "headphone vol read";
-    headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
-    headphoneVolProcess.waitForFinished();
-    headphoneVolRead = QString(headphoneVolProcess.readAllStandardOutput());
-    // strip /n
-    headphoneVolRead.chop(1);
-    headphoneVolProcess.close();
-    qDebug() << headphoneVolRead;
 }
 void Example::readSpeakerVol() {
     qDebug() << "speaker vol read";
@@ -82,27 +71,6 @@ void Example::readSpeakerVol() {
     speakerVolRead.chop(1);
     speakerVolProcess.close();
     qDebug() << speakerVolRead;
-}
-
-QString Example::getHeadphoneVol() {
-    headphones();
-    qDebug() << "getHeadphoneVol: " << headphoneVolRead;
-    qDebug() << "headphone vol read";
-    headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
-    headphoneVolProcess.waitForFinished();
-    headphoneVolRead = QString(headphoneVolProcess.readAllStandardOutput());
-    // strip /n
-    headphoneVolRead.chop(1);
-    headphoneVolProcess.close();
-    qDebug() << headphoneVolRead;
-    return headphoneVolRead;
-}
-void Example::setHeadphoneVol(const QString &t) {
-    // check t is in range and is number
-    if (t != headphoneVolRead) {
-        headphoneVolRead = t;
-        emit headphoneVolChanged();
-    }
 }
 QString Example::getSpeakerVol() {
     speakers();
@@ -125,19 +93,89 @@ void Example::setSpeakerVol(const QString &t) {
     }
 }
 
-void Example::onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    qDebug() << "Headphone on finished";
-    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
-}
 void Example::onSpeakerFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     qDebug() << "Speaker on finished";
+    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
+}
+void Example::onSpeakerVolFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Speaker Vol read finished";
+    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
+}
+
+/******************************************************************************/
+
+void Example::headphones() {
+    // called from qml button: unmute headphones vol 85%, speakers 2%.
+    qDebug() << "headphones on";
+    // hardcode location bad...
+    headphoneProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphones.sh");
+    headphoneProcess.waitForFinished();
+    headphoneProcess.close();
+    //readHeadphoneVol();
+}
+void Example::readHeadphoneVol() {
+    qDebug() << "headphone vol read";
+    headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
+    headphoneVolProcess.waitForFinished();
+    headphoneVolRead = QString(headphoneVolProcess.readAllStandardOutput());
+    // strip /n
+    headphoneVolRead.chop(1);
+    headphoneVolProcess.close();
+    qDebug() << headphoneVolRead;
+}
+QString Example::getHeadphoneVol() {
+    headphones();
+    qDebug() << "getHeadphoneVol: " << headphoneVolRead;
+    qDebug() << "headphone vol read";
+    headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
+    headphoneVolProcess.waitForFinished();
+    headphoneVolRead = QString(headphoneVolProcess.readAllStandardOutput());
+    // strip /n
+    headphoneVolRead.chop(1);
+    headphoneVolProcess.close();
+    qDebug() << headphoneVolRead;
+    return headphoneVolRead;
+}
+void Example::setHeadphoneVol(const QString &t) {
+    // check t is in range and is number
+    if (t != headphoneVolRead) {
+        headphoneVolRead = t;
+        emit headphoneVolChanged();
+    }
+}
+
+void Example::onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Headphone on finished";
     qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
 }
 void Example::onHeadphoneVolFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     qDebug() << "Headphone Vol read finished";
     qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
 }
-void Example::onSpeakerVolFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    qDebug() << "Speaker Vol read finished";
+
+/******************************************************************************/
+
+// TODO check for playback capture and speaker on causing feedback !!
+void Example::micMute() {
+    qDebug() << "Mic mute called.";
+    micMuteProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/mic_mute.sh");
+    micMuteProcess.waitForFinished();
+    micMuteProcess.close();
+    qDebug() << "Mic mute process closed.";
+}
+void Example::onMicMuteFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Mic mute on finished";
+    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
+}
+
+void Example::micUnmute() {
+    qDebug() << "Mic unmute called.";
+    micMuteProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/mic_unmute.sh");
+    micMuteProcess.waitForFinished();
+    micMuteProcess.close();
+    qDebug() << "Mic unmute process closed.";
+}
+void Example::onMicUnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Mic unmute on finished";
     qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
 }
