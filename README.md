@@ -30,9 +30,9 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 **TODO**
 
-Audio file (ogg) included but for some reason wont play at button click.<br />
-volume bars in app and do some GUI already.<br />
-different routing buttons for phone calls etc.<br />
+- Audio file (ogg) included but for some reason wont play at button click.<br />
+- volume sliders in app and do some GUI already.<br />
+- different routing option buttons for phone calls etc.<br />
 
 
 **NOTES**
