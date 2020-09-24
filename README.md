@@ -17,13 +17,15 @@ Simple 4 button operation to switch with info text:
 - mute or unmute the handset microphone
 
 built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.
+
 OS: Ubuntu Touch Version 8
+
 https://wiki.pine64.org/index.php/PinePhone_v1.2 (1.2a)
 
-using clickable:
+using clickable:<br />
 $ clickable --arch arm64 --ssh [ipaddr]
 
-app will print qDebug info:
+app will print qDebug info:<br />
 $ clickable --arch arm64 --ssh [ipaddr] log
 
 
@@ -37,6 +39,7 @@ different routing buttons for phone calls etc.
 
 
 **NOTES**
+
 Audio device for Pinephone CE is : sun50i-a64-audio
 
 apparently Line In is unused on Pinephone
