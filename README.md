@@ -29,6 +29,7 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 
 **CHANGES**
+- for version 0.1.1
 - separated mic1 and mic2 unmutes to not cause pain and suffering. Mute is still all mics.
 - testing QAudio for audio path intercept methods
 
