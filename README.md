@@ -28,6 +28,12 @@ app will print qDebug info:<br />
 $ clickable --arch arm64 --ssh [ipaddr] log
 
 
+**CHANGES**
+- separated mic1 and mic2 unmutes to not cause pain and suffering. Mute is still all mics.
+- testing QAudio for audio path intercept methods
+
+
+
 **TODO**
 
 - Audio file (ogg) included but for some reason wont play at button click.<br />
