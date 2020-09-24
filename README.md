@@ -7,7 +7,7 @@ QTaudio testing with UI
 
 Version: 0.1.0
 
-amixer volume and unmute for headphones and speakers is WORKING
+amixer volume and unmute for headphones and speakers is WORKING<br />
 amixer onboard mic mute/unmute and pipe to headphones or speakers is WORKING
 
 n.b. see Example Case below in Notes section
@@ -16,8 +16,7 @@ Simple 4 button operation to switch with info text:
 - either headphone or speakers on with default volume set
 - mute or unmute the handset microphone
 
-built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.
-
+built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.<br />
 OS: Ubuntu Touch Version 8
 
 https://wiki.pine64.org/index.php/PinePhone_v1.2 (1.2a)
@@ -31,11 +30,9 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 **TODO**
 
-Audio file (ogg) included but for some reason wont play at button click.
-
-volume bars in app and do some GUI already.
-
-different routing buttons for phone calls etc.
+Audio file (ogg) included but for some reason wont play at button click.<br />
+volume bars in app and do some GUI already.<br />
+different routing buttons for phone calls etc.<br />
 
 
 **NOTES**
@@ -45,11 +42,13 @@ Audio device for Pinephone CE is : sun50i-a64-audio
 apparently Line In is unused on Pinephone
 https://xnux.eu/devices/feature/audio-pp.html
 
-Audio in mic is clear and loud - no phone DSP, picks up ALL case vibrations.
-there seems to be a hotplug headphone beep too.
+Audio in mic is clear and loud - no phone DSP, picks up ALL case vibrations.<br />
+There seems to be a hotplug headphone beep too.
 
-Example Case: Headphone on with Mic unmute and no apparent audio other than hiss/static:
-Tapping the phone on the screen side at the top left corner over the headphone socket MAY fix it
+Example Case:<br />
+Headphone on with Mic unmute and no apparent audio other than hiss/static:<br />
+Tapping the phone on the screen side at the top left corner over the headphone socket MAY fix it<br />
+This seems to mean its hardware related and is possibly limited to the device I use.
 
 ====================
 
@@ -61,8 +60,7 @@ Failed to vibrate with pattern: "An AppArmor policy prevents this sender from se
 
 assumed this is due to volume control via amixer is connected to vibrate similar to Android phones that vibrate when volume is reduced past the zero value into vibrate then complete silence.
 
-needed to get around this spurious error by adding:
-
+needed to get around this spurious error by adding:<br />
 QTaudio.apparmor { "template": "unconfined", ... }
 
 =====================
