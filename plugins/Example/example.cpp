@@ -17,6 +17,7 @@
 #include <QDebug>
 #include <QAudio>
 #include <QAudioDeviceInfo>
+#include <QMediaPlayer>
 
 #include "example.h"
 
@@ -28,7 +29,8 @@ Example::Example() :
   headphoneVolProcess(),
   speakerVolProcess(),
   micMuteProcess(),
-  micUnmuteProcess(),
+  mic1UnmuteProcess(),
+  mic2UnmuteProcess(),
   headphoneVolRead('0'),
   speakerVolRead('0'),
   micMutesRead('0')
@@ -38,7 +40,8 @@ Example::Example() :
     connect(&headphoneVolProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneVolFinished(int, QProcess::ExitStatus)));
     connect(&speakerVolProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onSpeakerVolFinished(int, QProcess::ExitStatus)));
     connect(&micMuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMicMuteFinished(int, QProcess::ExitStatus)));
-    connect(&micUnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMicUnmuteFinished(int, QProcess::ExitStatus)));
+    connect(&mic1UnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMic1UnmuteFinished(int, QProcess::ExitStatus)));
+    connect(&mic2UnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMic2UnmuteFinished(int, QProcess::ExitStatus)));
 }
 
 // TODO :: cldean up this mess :)
@@ -51,15 +54,6 @@ void Example::speakers() {
     speakerProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speakers.sh");
     speakerProcess.waitForFinished();
     speakerProcess.close();
-
-    // not bothering with QAudio any more?
-    /*
-    const auto deviceInfos = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
-
-    for (const QAudioDeviceInfo &deviceInfo : deviceInfos) {
-      qDebug() << "Device name: " << deviceInfo.deviceName();
-    }
-    */
     //readSpeakerVol();
 }
 void Example::readSpeakerVol() {
@@ -155,7 +149,7 @@ void Example::onHeadphoneVolFinished(int exitCode, QProcess::ExitStatus exitStat
 
 /******************************************************************************/
 
-// TODO check for playback capture and speaker on causing feedback !!
+// mute all
 void Example::micMute() {
     qDebug() << "Mic mute called.";
     micMuteProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/mic_mute.sh");
@@ -167,15 +161,69 @@ void Example::onMicMuteFinished(int exitCode, QProcess::ExitStatus exitStatus) {
     qDebug() << "Mic mute on finished";
     qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
 }
-
-void Example::micUnmute() {
-    qDebug() << "Mic unmute called.";
-    micMuteProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/mic_unmute.sh");
+// MIC 1
+void Example::mic1Unmute() {
+    qDebug() << "Mic1 unmute called.";
+    micMuteProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/mic1_unmute.sh");
     micMuteProcess.waitForFinished();
     micMuteProcess.close();
-    qDebug() << "Mic unmute process closed.";
+    qDebug() << "Mic1 unmute process closed.";
 }
-void Example::onMicUnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus) {
-    qDebug() << "Mic unmute on finished";
+void Example::onMic1UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Mic1 unmute on finished";
     qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
+}
+// MIC 2
+void Example::mic2Unmute() {
+    qDebug() << "Mic2 unmute called.";
+    micMuteProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/mic2_unmute.sh");
+    micMuteProcess.waitForFinished();
+    micMuteProcess.close();
+    qDebug() << "Mic2 unmute process closed.";
+}
+void Example::onMic2UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "Mic2 unmute on finished";
+    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
+}
+/******************************************************************************/
+
+void Example::audioHijack() {
+    // attempt to get a QAudio object in the audio path to add some DSP or similar
+    qDebug() << "audioHijack get device info.";
+    const auto deviceInfos = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+
+    for (const QAudioDeviceInfo &deviceInfo : deviceInfos) {
+      qDebug() << "Device name: " << deviceInfo.deviceName();
+    }
+/*
+prints:
+      void AalMediaPlayerService::play()
+      audioHijack get device info.
+      Device name:  "default"
+      Device name:  "pulse"
+      Device name:  "sysdefault:CARD=sun50ia64audio"
+      Device name:  "dmix:CARD=sun50ia64audio,DEV=0"
+      Device name:  "dsnoop:CARD=sun50ia64audio,DEV=0"
+      Device name:  "hw:CARD=sun50ia64audio,DEV=0"
+      Device name:  "plughw:CARD=sun50ia64audio,DEV=0"
+      Device name:  "alsa_output.platform-sound.HiFi__hw_sun50ia64audio__sink"
+      Device name:  "sink.fake.sco"
+*/
+
+    // test the QMediaPlayer object
+    //QMediaPlayer qMediaPlayer = new QMediaPlayer();
+
+
+    // requires Qt 5.6
+    // QAudio::VoiceCommunicationRole	3	Voice communications, such as telephony
+    // constant QAudio::VoiceCommunicationRole | int value 3
+    // constant QAudio::MusicRole | int value 1
+
+    // QAudio::Role audioRole() const;
+    // void setAudioRole(QAudio::Role audioRole);
+
+
+
+
+
 }

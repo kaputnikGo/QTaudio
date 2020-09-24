@@ -45,6 +45,8 @@ https://xnux.eu/devices/feature/audio-pp.html
 Audio in mic is clear and loud - no phone DSP, picks up ALL case vibrations.<br />
 There seems to be a hotplug headphone beep too.
 
+USB-C charging cable connected can produce ground hum and circuit noise.
+
 Example Case:<br />
 Headphone on with Mic unmute and no apparent audio other than hiss/static:<br />
 Tapping the phone on the screen side at the top left corner over the headphone socket MAY fix it<br />

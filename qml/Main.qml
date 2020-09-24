@@ -145,7 +145,7 @@ MainView {
                 text: i18n.tr('display speaker volume')
             }
 //
-// MIC MUTE/UNMUTE
+// ALL MIC MUTE
 //
             Label {
                 id: label5
@@ -169,12 +169,18 @@ MainView {
                   clickSound.play()
                   Example.micMute()
                   label5.text = "all mics muted."
-                  button5.color = UbuntuColors.green
+                  button5.color = UbuntuColors.red
                   button6.color = UbuntuColors.graphite
+                  button7.color = UbuntuColors.graphite
                   // clear previous display
-                  label6.text = "Press to unmute all mics"
+                  label6.text = "Press to unmute Mic1 Handset"
+                  label7.text = "Press to unmute Mic2 Headset"
+
                 }
             }
+//
+// MIC 1 UNMUTE
+//
             Label {
                 id: label6
                 Layout.alignment: Qt.AlignHCenter
@@ -182,7 +188,7 @@ MainView {
                   top: button5.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('Press to unmute all mics')
+                text: i18n.tr('Press to unmute Mic1 Handset')
             }
             Button {
                 id: button6
@@ -191,16 +197,74 @@ MainView {
                   top: label6.bottom
                   topMargin: 8
                 }
-                text: i18n.tr('Mic unmute')
+                text: i18n.tr('Mic1 Handset unmute')
                 color: UbuntuColors.graphite
                 onClicked: {
                   clickSound.play()
-                  Example.micUnmute()
-                  label6.text = "all mics unmuted."
+                  Example.mic1Unmute()
+                  label6.text = "Mic1 unmuted."
                   button6.color = UbuntuColors.green
                   button5.color = UbuntuColors.graphite
                   // clear previous display
                   label5.text = "Press to mute all mics"
+                }
+            }
+//
+// MIC 2 UNMUTE
+//
+            Label {
+                id: label7
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: button6.bottom
+                  topMargin: 24
+                }
+                text: i18n.tr('Press to unmute Mic2 Headset')
+            }
+            Button {
+                id: button7
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label7.bottom
+                  topMargin: 8
+                }
+                text: i18n.tr('Mic2 Headset unmute')
+                color: UbuntuColors.graphite
+                onClicked: {
+                  clickSound.play()
+                  Example.mic2Unmute()
+                  label7.text = "Mic2 unmuted."
+                  button7.color = UbuntuColors.green
+                  button5.color = UbuntuColors.graphite
+                  // clear previous display
+                  label5.text = "Press to mute all mics"
+                }
+            }
+//
+// QAUDIO DEVICE
+//
+            Label {
+                id: label8
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: button7.bottom
+                  topMargin: 24
+                }
+                text: i18n.tr('Press to list QAudio devices')
+            }
+            Button {
+                id: button8
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label8.bottom
+                  topMargin: 8
+                }
+                text: i18n.tr('QAudio Info')
+                color: UbuntuColors.orange
+                onClicked: {
+                  clickSound.play()
+                  Example.audioHijack()
+                  label8.text = "device info list to debug."
                 }
             }
         }

@@ -39,8 +39,11 @@ class Example: public QObject {
     Q_INVOKABLE QString getSpeakerVol();
 
     Q_INVOKABLE void micMute();
-    Q_INVOKABLE void micUnmute();
+    Q_INVOKABLE void mic1Unmute();
+    Q_INVOKABLE void mic2Unmute();
     Q_INVOKABLE QString getMicMutes();
+
+    Q_INVOKABLE void audioHijack();
 
     void setHeadphoneVol(const QString &t);
     void setSpeakerVol(const QString &t);
@@ -52,7 +55,8 @@ class Example: public QObject {
     void onHeadphoneVolFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onSpeakerVolFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onMicMuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
-    void onMicUnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onMic1UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onMic2UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
   signals:
     void headphoneVolChanged();
@@ -65,7 +69,8 @@ class Example: public QObject {
     QProcess headphoneVolProcess;
     QProcess speakerVolProcess;
     QProcess micMuteProcess;
-    QProcess micUnmuteProcess;
+    QProcess mic1UnmuteProcess;
+    QProcess mic2UnmuteProcess;
 
     QString headphoneVolRead;
     QString speakerVolRead;

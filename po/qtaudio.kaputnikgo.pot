@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qtaudio.kaputnikgo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-24 04:28+0000\n"
+"POT-Creation-Date: 2020-09-24 07:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,10 +53,26 @@ msgstr ""
 msgid "Mic mute"
 msgstr ""
 
-#: ../qml/Main.qml:185
-msgid "Press to unmute all mics"
+#: ../qml/Main.qml:191
+msgid "Press to unmute Mic1 Handset"
 msgstr ""
 
-#: ../qml/Main.qml:194
-msgid "Mic unmute"
+#: ../qml/Main.qml:200
+msgid "Mic1 unmute"
+msgstr ""
+
+#: ../qml/Main.qml:222
+msgid "Press to unmute Mic2 Headset"
+msgstr ""
+
+#: ../qml/Main.qml:231
+msgid "Mic2 unmute"
+msgstr ""
+
+#: ../qml/Main.qml:253
+msgid "Press to list QAudio devices"
+msgstr ""
+
+#: ../qml/Main.qml:262
+msgid "QAudio Info"
 msgstr ""
