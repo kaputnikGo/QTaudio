@@ -20,6 +20,7 @@
 #include <QMediaPlayer>
 
 #include "example.h"
+#include "audiogen.h"
 
 using namespace std;
 
@@ -34,7 +35,8 @@ Example::Example() :
   headphoneVolRead('0'),
   speakerVolRead('0'),
   micMutesRead('0'),
-  qMediaPlayer()
+  qMediaPlayer(),
+  audioGenTest()
 {
     connect(&headphoneProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneFinished(int, QProcess::ExitStatus)));
     connect(&speakerProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onSpeakerFinished(int, QProcess::ExitStatus)));
@@ -188,9 +190,8 @@ void Example::onMic2UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus
 }
 /******************************************************************************/
 
-void Example::audioHijack() {
-    // attempt to get a QAudio object in the audio path to add some DSP or similar
-    qDebug() << "audioHijack get device info.";
+void Example::audioSetup() {
+    qDebug() << "audioSetup get device info:";
     const auto deviceInfos = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
 
     for (const QAudioDeviceInfo &deviceInfo : deviceInfos) {
@@ -198,8 +199,7 @@ void Example::audioHijack() {
     }
 /*
 prints:
-      void AalMediaPlayerService::play()
-      audioHijack get device info.
+      audioSetup get device info:
       Device name:  "default"
       Device name:  "pulse"
       Device name:  "sysdefault:CARD=sun50ia64audio"
@@ -210,7 +210,6 @@ prints:
       Device name:  "alsa_output.platform-sound.HiFi__hw_sun50ia64audio__sink"
       Device name:  "sink.fake.sco"
 */
-
     // test the QMediaPlayer object with current return values in rem
     // no media is loaded so values will reflect a default state
     qDebug() << "qmediaplayer invoke";
@@ -219,19 +218,36 @@ prints:
     qDebug() << "media status: " << qMediaPlayer.mediaStatus(); // NoMedia
     qDebug() << "audio role: " << qMediaPlayer.audioRole(); // MusicRole
     // looks for "file://" + "yourfileyouwanttoplay.mp3"
-    //qMediaPlayer.setMedia(QUrl::fromLocalFile("/assets/Stapler-sfc.ogg")); // cannot be found
-//opt/click.ubuntu.com/qtaudio.kaputnikgo/current
+    qMediaPlayer.setMedia(QUrl::fromLocalFile(QStringLiteral("/opt/click.ubuntu.com/qtaudio.kaputnikgo/current/assets/AlicePt1.ogg"))); // working
+}
+void Example::playAlice() {
+    // check for qMediaPlayer.mediaStatus() == QMediaPlayer::LoadedMedia
+    qDebug() << "playAlice called, status: " << qMediaPlayer.mediaStatus(); // returns loadingMedia
+    if (qMediaPlayer.mediaStatus() == QMediaPlayer::LoadingMedia) {
+        qDebug() << "Check: Alice is loading, try play.";
+        qMediaPlayer.play();
+    }
+    else {
+        qDebug() << "Check: Alice not loading: " << qMediaPlayer.mediaStatus();
+    }
+}
+void Example::stopAlice() {
+    qDebug() << "stopAlice called, status: " << qMediaPlayer.mediaStatus(); // returns
+    qMediaPlayer.stop();
+}
 
-    // requires Qt 5.6
-    // QAudio::VoiceCommunicationRole	3	Voice communications, such as telephony
-    // constant QAudio::VoiceCommunicationRole | int value 3
-    // constant QAudio::MusicRole | int value 1
+/******************************************************************************/
 
-    // QAudio::Role audioRole() const;
-    // void setAudioRole(QAudio::Role audioRole);
-
-
+void Example::callAudioGen() {
+    qDebug() << "callAudioGen called...";
+    //AudioTest audioGenTest;
+    audioGenTest.runAudioGenTest();
+}
 
 
+/******************************************************************************/
 
+void Example::destructor() {
+    // try and catch app close/exit/destroy etc - DOES NOT
+    qDebug() << "DESTRUCTOR CALLED.";
 }

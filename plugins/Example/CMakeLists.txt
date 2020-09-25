@@ -5,6 +5,7 @@ set(
     SRC
     plugin.cpp
     example.cpp
+    audiogen.cpp
 )
 
 set(CMAKE_AUTOMOC ON)

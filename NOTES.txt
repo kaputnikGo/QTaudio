@@ -1,5 +1,35 @@
 some notes taken during process::
 
+this app will always work against whatever the OS settings are doing...
+
+
+QMediaPlayer stuff:
+load and play long ogg file only sends output to current selected output device,
+cannot be switched via QTaudio app. Switching back to original output has no audio now.
+
+Assuming that QAudio has connection to one device at play. Maybe stops it?
+test - load, play audio thru speakers, wait 6 secs, switch to headphones (already plugged in):
+start:
+    void AalMediaPlayerControl::play()
+    Actually calling m_hubPlayerSession->play()
+    PlaybackStatus changed to : "playing"
+then at headphones on:
+    [player_stub.cpp:185@operaotr()] EndOfStream signal arrived via the bus
+    void AalMediaPlayerControl::playbackComplete()
+    virtual void AalMediaPlayerControl::stop()
+    void AalVideoRendererControl::playbackComplete()
+    PlaybackStatus changed to : "stopped"
+then press Stop Audio
+    [nothing new added to qDebug]
+
+closing up when its playing audio will keep audio playing...
+look for pulseaudio process to kill (uh-oh, reboot)
+
+no dsp present on device when switched to VoiceComm, maybe its only a priority signal.
+
+
+
+
 to get .sh echo (and errors) use after install on device:
 $ clickable --arch arm64 --ssh [ipaddr] log
 
@@ -78,3 +108,76 @@ for playback:
 'DAC Mixer ADC' playback [off]
 'DAC Mixer AIF2 Dac' playback [off]
 'DAC Reversed' playback [off]
+
+
+QTaudio app, audioSetup get device info:
+Device name:  "default"
+Device name:  "pulse"
+Device name:  "sysdefault:CARD=sun50ia64audio"
+Device name:  "dmix:CARD=sun50ia64audio,DEV=0"
+Device name:  "dsnoop:CARD=sun50ia64audio,DEV=0"
+Device name:  "hw:CARD=sun50ia64audio,DEV=0"
+Device name:  "plughw:CARD=sun50ia64audio,DEV=0"
+Device name:  "alsa_output.platform-sound.HiFi__hw_sun50ia64audio__sink"
+Device name:  "sink.fake.sco"
+
+===============================================
+
+pulseaudio
+
+$ pacmd list-cards  // gets full listing for the sun50i-a64-audio card
+$ pactl list short cards // gets card(s) name
+
+index of card is 0
+
+reading ~/.config/pulse/ubuntu-phablet-default-sink shows (same as what QAudio gets):
+alsa_output.platform-sound.HiFi__hw_sun50ia64audio__sink
+
+reading ~/.config/pulse/ubuntu-phablet-default-source shows
+alsa_input.platform-sound.HiFi__hw_sun50ia64audio__source
+
+~/.config/pulse/ubuntu-phablet-stream-volumes.tdb
+tdbdump says:
+{
+key(33) = "source-output-by-media-role:phone"
+data(13) = "B\010m\00v\00000N0N"
+}
+{
+key(30) = "sink-input-by-media-role:phone"
+data(18) = "B\011m\01\00v\01\00\00\8F\F6000N0N"
+}
+{
+key(33) = "sink-input-by-media-role:abstract"
+data(13) = "B\010m\00v\00000N0N"
+}
+{
+key(30) = "sink-input-by-media-role:music"
+data(13) = "B\010m\00v\00000N0N"
+}
+{
+key(38) = "sink-input-by-media-role:feedbacksound"
+data(13) = "B\010m\00v\00000N0N"
+}
+{
+key(36) = "source-output-by-media-role:abstract"
+data(13) = "B\010m\00v\00000N0N"
+}
+{
+key(30) = "sink-input-by-media-role:alert"
+data(18) = "B\011m\01\00v\01\00\01\00\00000N0N"
+}
+{
+key(35) = "sink-input-by-media-role:multimedia"
+data(18) = "B\011m\01\00v\01\00\00\85\1D000N0N"
+}
+{
+key(30) = "sink-input-by-media-role:alarm"
+data(18) = "B\011m\01\00v\01\00\00\BCS000N0N"
+}
+
+in /etc/pulse/
+client.conf is all remm'd
+daemon.conf has some entries
+default.pa seems fully populated
+
+system sound at: /usr/share/sounds/ubuntu/stereo/button-pressed.ogg

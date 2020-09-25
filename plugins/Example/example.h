@@ -21,6 +21,8 @@
 #include <QProcess>
 #include <QtMultimedia/QMediaPlayer>
 
+#include "audiogen.h"
+
 class Example: public QObject {
     Q_OBJECT
     Q_PROPERTY(QString headphoneVolRead READ getHeadphoneVol WRITE setHeadphoneVol NOTIFY headphoneVolChanged)
@@ -44,7 +46,13 @@ class Example: public QObject {
     Q_INVOKABLE void mic2Unmute();
     Q_INVOKABLE QString getMicMutes();
 
-    Q_INVOKABLE void audioHijack();
+    Q_INVOKABLE void audioSetup();
+    Q_INVOKABLE void playAlice();
+    Q_INVOKABLE void stopAlice();
+
+    Q_INVOKABLE void callAudioGen();
+    Q_INVOKABLE void destructor();
+
 
     void setHeadphoneVol(const QString &t);
     void setSpeakerVol(const QString &t);
@@ -78,6 +86,7 @@ class Example: public QObject {
     QString micMutesRead;
 
     QMediaPlayer qMediaPlayer;
+    AudioGenTest audioGenTest;
 
 };
 

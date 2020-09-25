@@ -3,7 +3,7 @@
 
 **RELEASE INFO**
 
-QTaudio testing with UI
+QTaudio testing with UI - work in progress
 
 Version: 0.1.1
 
@@ -17,6 +17,7 @@ Simple 6 button operation to switch with info text:
 - unmute the handset or headset microphones
 - mute all microphones
 - QAudio device list debug print
+- Volume rocker also controls volume for Headphones (UI says Speakers)
 
 built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.<br />
 OS: Ubuntu Touch Version 8
@@ -29,28 +30,31 @@ $ clickable --arch arm64 --ssh [ipaddr]
 app will print qDebug info:<br />
 $ clickable --arch arm64 --ssh [ipaddr] log
 
-
+<br />
 **CHANGES**
 - for next version 0.1.2
--
+- included Gutenberg Project audio file (~4mb) in assets folder
+- buttons make (bad) click sound
+- querying/playing local file using QMediaPlayer
+- playing file does not route audio to Headphones when switched
+- audio out only goes to whatever ouput set before playing file.
+- added a waveform generator to play a continuous tone, does switch outputs
 
 
-
+<br />
 **TODO**
-
-- Audio file (ogg) included but for some reason wont play at button click.<br />
 - volume sliders in app and do some GUI already.<br />
 - different routing option buttons for phone calls etc.<br />
+- replace the fried handset speaker<br />
 
-
+<br />
 **NOTES**
-
 Audio device for Pinephone CE is : sun50i-a64-audio
 
 apparently Line In is unused on Pinephone
 https://xnux.eu/devices/feature/audio-pp.html
 
-Audio in mic is clear and loud - no phone DSP, picks up ALL case vibrations.<br />
+Audio in mic is loud and clear - no phone DSP, picks up ALL case vibrations.<br />
 There seems to be a hotplug headphone beep too.
 
 USB-C charging cable connected can produce ground hum and circuit noise.
