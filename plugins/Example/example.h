@@ -19,6 +19,7 @@
 
 #include <QObject>
 #include <QProcess>
+#include <QtMultimedia/QMediaPlayer>
 
 class Example: public QObject {
     Q_OBJECT
@@ -75,6 +76,8 @@ class Example: public QObject {
     QString headphoneVolRead;
     QString speakerVolRead;
     QString micMutesRead;
+
+    QMediaPlayer qMediaPlayer;
 
 };
 

@@ -33,7 +33,8 @@ Example::Example() :
   mic2UnmuteProcess(),
   headphoneVolRead('0'),
   speakerVolRead('0'),
-  micMutesRead('0')
+  micMutesRead('0'),
+  qMediaPlayer()
 {
     connect(&headphoneProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onHeadphoneFinished(int, QProcess::ExitStatus)));
     connect(&speakerProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onSpeakerFinished(int, QProcess::ExitStatus)));
@@ -210,9 +211,16 @@ prints:
       Device name:  "sink.fake.sco"
 */
 
-    // test the QMediaPlayer object
-    //QMediaPlayer qMediaPlayer = new QMediaPlayer();
-
+    // test the QMediaPlayer object with current return values in rem
+    // no media is loaded so values will reflect a default state
+    qDebug() << "qmediaplayer invoke";
+    qDebug() << "isAudioAvailable: " << qMediaPlayer.isAudioAvailable(); // false
+    qDebug() << "current state: " << qMediaPlayer.state(); // StoppedState
+    qDebug() << "media status: " << qMediaPlayer.mediaStatus(); // NoMedia
+    qDebug() << "audio role: " << qMediaPlayer.audioRole(); // MusicRole
+    // looks for "file://" + "yourfileyouwanttoplay.mp3"
+    //qMediaPlayer.setMedia(QUrl::fromLocalFile("/assets/Stapler-sfc.ogg")); // cannot be found
+//opt/click.ubuntu.com/qtaudio.kaputnikgo/current
 
     // requires Qt 5.6
     // QAudio::VoiceCommunicationRole	3	Voice communications, such as telephony

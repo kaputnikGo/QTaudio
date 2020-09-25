@@ -5,16 +5,18 @@
 
 QTaudio testing with UI
 
-Version: 0.1.0
+Version: 0.1.1
 
 amixer volume and unmute for headphones and speakers is WORKING<br />
-amixer onboard mic mute/unmute and pipe to headphones or speakers is WORKING
+amixer onboard mic1 and mic2 mute/unmute and pipe to headphones or speakers is WORKING
 
 n.b. see Example Case below in Notes section
 
-Simple 4 button operation to switch with info text:
-- either headphone or speakers on with default volume set
-- mute or unmute the handset microphone
+Simple 6 button operation to switch with info text:
+- either headphone or speakers on with hardcoded volume set (85%)
+- unmute the handset or headset microphones
+- mute all microphones
+- QAudio device list debug print
 
 built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.<br />
 OS: Ubuntu Touch Version 8
@@ -29,9 +31,8 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 
 **CHANGES**
-- for version 0.1.1
-- separated mic1 and mic2 unmutes to not cause pain and suffering. Mute is still all mics.
-- testing QAudio for audio path intercept methods
+- for next version 0.1.2
+-
 
 
 
