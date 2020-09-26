@@ -5,6 +5,10 @@
 
 QTaudio testing with UI - work in progress
 
+Do not drive the handset speaker too loud.<br />
+Not sure of peak volume yet, nor of frequency response.<br/>
+Currently assuming that 90% is a safe peak for most frequencies.
+
 Version: 0.1.1
 
 amixer volume and unmute for headphones and speakers is WORKING<br />
@@ -13,7 +17,7 @@ amixer onboard mic1 and mic2 mute/unmute and pipe to headphones or speakers is W
 n.b. see Example Case below in Notes section
 
 Simple 6 button operation to switch with info text:
-- either headphone or speakers on with hardcoded volume set (85%)
+- either headphone or speakers on with hardcoded volume set (80%)
 - unmute the handset or headset microphones
 - mute all microphones
 - QAudio device list debug print
@@ -31,7 +35,9 @@ app will print qDebug info:<br />
 $ clickable --arch arm64 --ssh [ipaddr] log
 
 <br />
+
 **CHANGES**
+
 - for next version 0.1.2
 - included Gutenberg Project audio file (~4mb) in assets folder
 - buttons make (bad) click sound
@@ -42,13 +48,17 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 
 <br />
+
 **TODO**
+
 - volume sliders in app and do some GUI already.<br />
 - different routing option buttons for phone calls etc.<br />
 - replace the fried handset speaker<br />
 
 <br />
+
 **NOTES**
+
 Audio device for Pinephone CE is : sun50i-a64-audio
 
 apparently Line In is unused on Pinephone
