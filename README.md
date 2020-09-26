@@ -7,6 +7,7 @@ QTaudio testing with UI - work in progress
 
 Do not drive the handset speaker too loud.<br />
 Not sure of peak volume yet, nor of frequency response.<br/>
+Possible problematic frequency ~600 Hz at amplitude. <br />
 Currently assuming that 90% is a safe peak for most frequencies.
 
 Version: 0.1.1
