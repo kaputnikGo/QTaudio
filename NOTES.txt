@@ -181,3 +181,29 @@ daemon.conf has some entries
 default.pa seems fully populated
 
 system sound at: /usr/share/sounds/ubuntu/stereo/button-pressed.ogg
+
+
+QML STYLING
+where is the material style imports  and QtQuick.Control.Styles ?
+
+/*
+style: SliderStyle {
+    groove: Rectangle {
+        implicitHeight: 10
+        color: "lightgrey"
+        border {
+          color: "#999"
+          width: 1
+        }
+        Rectangle {
+          implicitHeight: 10
+          color: "orange"
+          implicitWidth: styleData.handlePosition
+          border {
+            color: "#999"
+            width: 1
+          }
+        }
+    }
+}
+*/

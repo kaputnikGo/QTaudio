@@ -251,7 +251,9 @@ void Example::toggleAudioGen() {
     qDebug() << "toggleAudioGen called from qml";
     audioGenTest.toggleSuspendResume();
 }
-
+int Example::getCurrentToneFreq() {
+    audioGenTest.getCurrentToneFreq();
+}
 
 /******************************************************************************/
 

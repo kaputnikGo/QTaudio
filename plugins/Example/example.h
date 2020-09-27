@@ -52,6 +52,7 @@ class Example: public QObject {
 
     Q_INVOKABLE void runAudioGen();
     Q_INVOKABLE void toggleAudioGen();
+    Q_INVOKABLE int getCurrentToneFreq();
     Q_INVOKABLE void destructor();
 
 

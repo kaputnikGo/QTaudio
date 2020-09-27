@@ -92,6 +92,7 @@ class AudioGenTest: public QObject {
 
       void runAudioGenTest();
       void toggleSuspendResume();
+      int getCurrentToneFreq();
 
   private:
       //void initializeWindow(); // THIS TO GO
@@ -100,6 +101,7 @@ class AudioGenTest: public QObject {
 
   private:
       QTimer *m_pushTimer;
+      int ToneSampleRateHz;
 
       // Owned by layout
       /*

@@ -56,7 +56,7 @@
 const int DurationSeconds = 1;
 const int DataSampleRateHz = 44100;
 const int BufferSize      = 32768;
-int ToneSampleRateHz = 500;
+//int ToneSampleRateHz = 500;
 
 Generator::Generator(const QAudioFormat &format,
                        qint64 durationUs,
@@ -161,6 +161,7 @@ AudioGenTest::AudioGenTest()
       ,   m_output(0)
       ,   m_pullMode(true)
       ,   m_buffer(BufferSize, 0)
+      ,   ToneSampleRateHz(200)
 {
       //initializeWindow(); // THIS TO GO
       //initializeAudio();
@@ -215,25 +216,25 @@ void AudioTest::initializeWindow() {
 
 void AudioGenTest::initializeAudio() {
       connect(m_pushTimer, SIGNAL(timeout()), SLOT(pushTimerExpired()));
-
+      qDebug() << "init - connect";
       m_format.setSampleRate(DataSampleRateHz);
       m_format.setChannelCount(1);
       m_format.setSampleSize(16);
       m_format.setCodec("audio/pcm");
       m_format.setByteOrder(QAudioFormat::LittleEndian);
       m_format.setSampleType(QAudioFormat::SignedInt);
-
+      qDebug() << "init - mformat.";
       QAudioDeviceInfo info(m_device);
       if (!info.isFormatSupported(m_format)) {
           qWarning() << "Default format not supported - trying to use nearest";
           m_format = info.nearestFormat(m_format);
       }
-
+      qDebug() << "init - device info.";
       if (m_generator)
           delete m_generator;
       // here be the freq: ToneSampleRateHz
       m_generator = new Generator(m_format, DurationSeconds*1000000, ToneSampleRateHz, this);
-
+      qDebug() << "init - mgenerator.";
       createAudioOutput();
 }
 
@@ -321,20 +322,26 @@ void AudioGenTest::toggleSuspendResume() {
 
 void AudioGenTest::runAudioGenTest() {
     qDebug() << "runAudioGenTest called.";
-    //ToneSampleRateHz += 100; // this is not accessible yet
-    // check for already running, do not allow multiple instances or we can get harmonic distortion etc
-    if (m_audioOutput) {
+    // check for already running, do not allow multiple instances
+    // or we can get harmonic distortion, pain etc etc
+    if (m_audioOutput != 0) {
         qDebug() << "AudioGen already running.";
         // stop it, and reset for possible change in vars
         m_pushTimer->stop();
         m_audioOutput->stop();
-        if (m_generator)
-            delete m_generator;
         // add some Hz to check
         ToneSampleRateHz += 100;
+        delete m_audioOutput;
+        m_audioOutput = 0;
+        qDebug() << "End of AudioGen running reset.";
     }
     else {
+        qDebug() << "init Audio from runAudioGenTest.";
         initializeAudio();
-        volumeChanged(35); // set volume to half (value / 100 == 0 - 1)
+        //volumeChanged(35); // set volume to lower half (value / 100 == 0 - 1)
     }
+}
+
+int AudioGenTest::getCurrentToneFreq() {
+    return ToneSampleRateHz;
 }

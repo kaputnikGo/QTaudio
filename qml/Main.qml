@@ -29,6 +29,7 @@ MainView {
     applicationName: 'qtaudio.kaputnikgo'
     automaticOrientation: true
 
+    //theme.name: "Ubuntu.Components.Themes.SuruDark
     width: units.gu(45)
     height: units.gu(100)
 
@@ -107,7 +108,8 @@ MainView {
                       label1.text = "headphones unmute vol 80%, speakers vol 2%."
                       button1.color = UbuntuColors.green
                       button3.color = UbuntuColors.graphite
-                      label2.text = "current headphone volume: " + Example.getHeadphoneVol()
+                      //label2.text = "current headphone volume: " + Example.getHeadphoneVol()
+                      outputSlider.value = Example.getHeadphoneVol()
                     }
                 }
                 Button {
@@ -125,21 +127,28 @@ MainView {
                       label1.text = "headphones vol 2%, speakers vol 80%."
                       button3.color = UbuntuColors.green
                       button1.color = UbuntuColors.graphite
-                      label2.text = "current speaker volume: " + Example.getSpeakerVol()
+                      //label2.text = "current speaker volume: " + Example.getSpeakerVol()
+                      outputSlider.value = Example.getSpeakerVol()
                     }
                 }
             }// end buttons row
 
 // DISPLAY VOLUME
-// replace this with a volume slider
-            Label {
-                id: label2
-                Layout.alignment: Qt.AlignHCenter
+            Slider {
+                id: outputSlider
                 anchors {
                   top: button3.bottom
                   topMargin: 8
                 }
-                text: i18n.tr('display current volume')
+                Layout.alignment: Qt.AlignHCenter
+                function formatValue(v) {
+                  return v.toFixed(0)
+                }
+                minimumValue: 0
+                maximumValue: 100
+                stepSize: 1
+                value: 0.0
+                live: true
             }
 
 // add a <hr /> type thing here
@@ -147,7 +156,7 @@ MainView {
                 id: separator1
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: label2.bottom
+                  top: outputSlider.bottom
                   topMargin: 12
                 }
                 text: i18n.tr('_______________________________________________')
@@ -382,66 +391,110 @@ MainView {
 //
 // CALL AUDIOGEN
 //
-            Label {
-                id: label11
-                Layout.alignment: Qt.AlignHCenter
+            Row {
+                id: audiogenLabelRow
+                spacing: units.gu(2)
+                height: units.gu(4) // needs a height else 1px
                 anchors {
-                  top: separator3.bottom
-                  topMargin: 24
+                    margins: units.gu(2)
+                    top: separator3.bottom
+                    left: parent.left
+                    right: parent.right
                 }
-                text: i18n.tr('press to run AudioGen')
-            }
-            Button {
-                id: button11
-                Layout.alignment: Qt.AlignHCenter
+                Label {
+                    id: label11
+                    Layout.alignment: Qt.AlignHCenter
+                    anchors {
+                      top: separator3.bottom
+                      left: audiogenLabelRow.left
+                      topMargin: 24
+                    }
+                    text: i18n.tr('press to run AudioGen')
+                }
+                Label {
+                    id: label12
+                    Layout.alignment: Qt.AlignHCenter
+                    anchors {
+                      top: button11.bottom
+                      right: audiogenLabelRow.right
+                      topMargin: 24
+                    }
+                    text: i18n.tr('toggle pause AudioGen')
+                }
+
+            }// end audiogenLabelRow
+
+            Row {
+                id: audiogenRow
+                spacing: units.gu(2)
+                height: units.gu(4) // needs a height else 1px
                 anchors {
-                  top: label11.bottom
-                  topMargin: 8
+                    margins: units.gu(2)
+                    top: label11.bottom
+                    left: parent.left
+                    right: parent.right
                 }
-                text: i18n.tr('Run AudioGen')
-                color: UbuntuColors.slate
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  Example.runAudioGen()
-                  button11.color = UbuntuColors.red
-                  button11.text = "Stop AudioGen"
-                  // logic state here too...
-                  // label11.text: button11.onClicked? "blah" : "Other blah"
-                  label11.text = "AudioGen running/stopped"
-                }
-            }
-            Label {
-                id: label12
                 Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: button11.bottom
-                  topMargin: 24
+                Button {
+                    id: button11
+                    Layout.alignment: Qt.AlignHCenter
+                    anchors {
+                      top: label11.bottom
+                      left: audiogenRow.left
+                      topMargin: 8
+                    }
+                    text: i18n.tr('Run AudioGen')
+                    color: UbuntuColors.slate
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      Example.runAudioGen()
+                      button11.color = UbuntuColors.red
+                      button11.text = "Restart +100hz"
+                      // logic state here too...
+                      // label11.text: button11.onClicked? "blah" : "Other blah"
+                      label11.text = "AudioGen running at " + Example.getCurrentToneFreq()
+                    }
                 }
-                text: i18n.tr('toggle pause AudioGen')
-            }
-            Button {
-                id: button12
-                Layout.alignment: Qt.AlignHCenter
+                Button {
+                    id: button12
+                    Layout.alignment: Qt.AlignHCenter
+                    anchors {
+                      top: label12.bottom
+                      right: audiogenRow.right
+                      topMargin: 8
+                    }
+                    text: i18n.tr('Pause AudioGen')
+                    color: UbuntuColors.slate
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      Example.toggleAudioGen()
+                      button12.color = UbuntuColors.blue
+                      button12.text = "Resume AudioGen"
+                      // logic state here
+                      label12.text = "AudioGen pause/resume"
+                    }
+                }
+            }// end audiogenRow
+
+// add QAudio volume slider here?
+            Slider {
+                id: audiogenSlider
                 anchors {
                   top: label12.bottom
                   topMargin: 8
                 }
-                text: i18n.tr('Pause AudioGen')
-                color: UbuntuColors.slate
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  Example.toggleAudioGen()
-                  button12.color = UbuntuColors.blue
-                  button12.text = "Resume AudioGen"
-                  // logic state here
-                  label12.text = "AudioGen paused/resumed"
+                Layout.alignment: Qt.AlignHCenter
+                function formatValue(v) {
+                  return v.toFixed(0)
                 }
+                minimumValue: 0
+                maximumValue: 100
+                stepSize: 1
+                value: 50
+                live: true
             }
-
-// add QAudio volume slider here?
-
         } // end ColumnLayout
     } // end Page
 } // end MainView

@@ -42,16 +42,8 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 **CHANGES**
 
-- included Gutenberg Project audio file (~4mb) in assets folder
-- buttons make (bad) click sound
-- querying/playing local file using QMediaPlayer
-- playing file does not route audio to Headphones when switched
-- audio out only goes to whatever ouput set before playing file.
-- added a waveform generator to play a continuous tone, does switch outputs
-- replaced original handset speaker, now with different freq responses.
-- mic unmute now auto-switches output to ensure no feedback
-- mic unmute feedback protect can still be overrided with an output change
-- button row layout
+- added CHANGELOG
+- 
 
 
 <br />
@@ -62,6 +54,7 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 - different routing option buttons for phone calls etc.<br />
 - need to get current state at app start
 - need to update GUI at changes
+- ogg playback currently cannot resume, nor play again after stop or end
 
 <br />
 
