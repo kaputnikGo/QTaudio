@@ -32,24 +32,7 @@ MainView {
     width: units.gu(45)
     height: units.gu(100)
 
-    //
-    state: settings.state
-    states: [
-        State {
-            name: "active"
-        },
-        State {
-            name: "inactive"
-        }
-    ]
-
-    Settings {
-        id: settings
-        property string state: "active"
-    }
-
     Component.onDestruction: {
-        settings.state = page.state
         Example.destructor()
     }
 
@@ -75,9 +58,17 @@ MainView {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
-                topMargin: 24
+                topMargin: 18
             }
-// HEADPHONES ENABLE
+            /*
+            // expander item
+            Item {
+              Layout.fillWidth: true
+              // or
+              Layout.fillHeight: true
+            }
+            */
+// HEADPHONES/SPEAKER ENABLE
             Label {
                 id: label1
                 anchors {
@@ -85,87 +76,70 @@ MainView {
                   topMargin: 24
                 }
                 Layout.alignment: Qt.AlignHCenter
-                text: i18n.tr('Press to enable headphones')
+                text: i18n.tr('Switch between headphones or speaker')
             }
-            Button {
-                id: button1
-                Layout.alignment: Qt.AlignHCenter
+
+          // make buttons in a row
+            Row {
+                id: outputRow
+                spacing: units.gu(2)
+                height: units.gu(6) // needs a height else 1px
                 anchors {
-                  top: label1.bottom
-                  topMargin: 8
+                    margins: units.gu(2)
+                    top: label1.bottom
+                    left: parent.left
+                    right: parent.right
                 }
-                text: i18n.tr('Headphones')
-                color: UbuntuColors.graphite
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  //Example.headphones()
-                  label1.text = "headphones unmute vol 85%, speakers vol 2%."
-                  button1.color = UbuntuColors.green
-                  button3.color = UbuntuColors.graphite
-                  // clear previous display
-                  label3.text = "Press to enable speakers"
-                  label4.text = "display speaker volume"
-                  // update readvol text
-                  //Example.readHeadphoneVol()
-                  label2.text = "current headphone volume: " + Example.getHeadphoneVol()
+                Layout.alignment: Qt.AlignHCenter
+
+                Button {
+                    id: button1
+                    anchors {
+                        top: label1.bottom
+                        left: outputRow.left
+                        topMargin: 8
+                    }
+                    text: i18n.tr('Headphones')
+                    color: UbuntuColors.graphite
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      label1.text = "headphones unmute vol 80%, speakers vol 2%."
+                      button1.color = UbuntuColors.green
+                      button3.color = UbuntuColors.graphite
+                      label2.text = "current headphone volume: " + Example.getHeadphoneVol()
+                    }
                 }
-            }
-// DISPLAY HEADPHONE VOLUME
+                Button {
+                    id: button3
+                    anchors {
+                      top: label1.bottom
+                      right: outputRow.right
+                      topMargin: 8
+                    }
+                    text: i18n.tr('Speakers')
+                    color: UbuntuColors.graphite
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      label1.text = "headphones vol 2%, speakers vol 80%."
+                      button3.color = UbuntuColors.green
+                      button1.color = UbuntuColors.graphite
+                      label2.text = "current speaker volume: " + Example.getSpeakerVol()
+                    }
+                }
+            }// end buttons row
+
+// DISPLAY VOLUME
+// replace this with a volume slider
             Label {
                 id: label2
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: button1.bottom
-                  topMargin: 8
-                }
-                text: i18n.tr('display headphone volume')
-            }
-//
-// SPEAKERS ENABLE
-//
-            Label {
-                id: label3
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: label2.bottom
-                  topMargin: 24
-                }
-                text: i18n.tr('Press to enable speakers')
-            }
-            Button {
-                id: button3
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: label3.bottom
-                  topMargin: 8
-                }
-                text: i18n.tr('Speakers')
-                color: UbuntuColors.graphite
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  //Example.speakers()
-                  label3.text = "headphones vol 2%, speakers vol 85%."
-                  button3.color = UbuntuColors.green
-                  button1.color = UbuntuColors.graphite
-                  // clear previous display
-                  label1.text = "Press to enable headphones"
-                  label2.text = "display headphone volume"
-                  // update speaker vol text
-                  //Example.readSpeakerVol()
-                  label4.text = "current speaker volume: " + Example.getSpeakerVol()
-                }
-            }
-// DISPLAY SPEAKER VOL
-            Label {
-                id: label4
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
                   top: button3.bottom
-                  topMargin: 24
+                  topMargin: 8
                 }
-                text: i18n.tr('display speaker volume')
+                text: i18n.tr('display current volume')
             }
 
 // add a <hr /> type thing here
@@ -173,10 +147,10 @@ MainView {
                 id: separator1
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: label4.bottom
+                  top: label2.bottom
                   topMargin: 12
                 }
-                text: i18n.tr('__________________________________________')
+                text: i18n.tr('_______________________________________________')
             }
 //
 // ALL MIC MUTE
@@ -214,8 +188,9 @@ MainView {
                 }
             }
 //
-// MIC 1 UNMUTE
+// MIC UNMUTE
 //
+
             Label {
                 id: label6
                 Layout.alignment: Qt.AlignHCenter
@@ -223,60 +198,71 @@ MainView {
                   top: button5.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('Press to unmute Mic1 Handset')
+                text: i18n.tr('Press to unmute either mic.')
             }
-            Button {
-                id: button6
-                Layout.alignment: Qt.AlignHCenter
+
+        // make MIC buttons in a row
+            Row {
+                id: unmuteRow
+                spacing: units.gu(2)
+                height: units.gu(4) // needs a height else 1px
                 anchors {
-                  top: label6.bottom
-                  topMargin: 8
+                    margins: units.gu(2)
+                    top: label6.bottom
+                    left: parent.left
+                    right: parent.right
                 }
-                text: i18n.tr('Mic1 Handset unmute')
-                color: UbuntuColors.graphite
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  Example.mic1Unmute()
-                  label6.text = "Mic1 unmuted."
-                  button6.color = UbuntuColors.green
-                  button5.color = UbuntuColors.graphite
-                  // clear previous display
-                  label5.text = "Press to mute all mics"
-                }
-            }
-//
-// MIC 2 UNMUTE
-//
-            Label {
-                id: label7
                 Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: button6.bottom
-                  topMargin: 24
+
+// DO NOT ALLOW MIC1 handset while SPEAKER.
+                Button {
+                    id: button6
+                    Layout.alignment: Qt.AlignHCenter
+                    anchors {
+                      top: label6.bottom
+                      topMargin: 8
+                    }
+                    text: i18n.tr('Mic1 Handset unmute')
+                    color: UbuntuColors.graphite
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      // toggle Headphones
+                      button1.clicked()
+                      label6.text = "Mic1 Handset unmuted."
+                      button6.color = UbuntuColors.green
+                      button5.color = UbuntuColors.graphite
+                      // lastly:
+                      Example.mic1Unmute()
+                    }
                 }
-                text: i18n.tr('Press to unmute Mic2 Headset')
-            }
-            Button {
-                id: button7
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: label7.bottom
-                  topMargin: 8
+
+// DO NOT ALLOW MIC2 headset while HEADPHONES.
+                Button {
+                    id: button7
+                    Layout.alignment: Qt.AlignHCenter
+                    anchors {
+                      top: label7.bottom
+                      topMargin: 8
+                    }
+                    text: i18n.tr('Mic2 Headset unmute')
+                    color: UbuntuColors.graphite
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      // toggle Speakers
+                      button3.clicked()
+                      Example.mic2Unmute()
+                      label6.text = "Mic2 Headset unmuted."
+                      button7.color = UbuntuColors.green
+                      button5.color = UbuntuColors.graphite
+                      // lastly:
+                      Example.mic2Unmute()
+                    }
                 }
-                text: i18n.tr('Mic2 Headset unmute')
-                color: UbuntuColors.graphite
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  Example.mic2Unmute()
-                  label7.text = "Mic2 unmuted."
-                  button7.color = UbuntuColors.green
-                  button5.color = UbuntuColors.graphite
-                  // clear previous display
-                  label5.text = "Press to mute all mics"
-                }
-            }
+            }// end row
+
+// add a mic gain slider here
 
 // add <hr /> thing here
             Label {
@@ -284,9 +270,9 @@ MainView {
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
                   top: button7.bottom
-                  topMargin: 12
+                  topMargin: 2
                 }
-                text: i18n.tr('__________________________________________')
+                text: i18n.tr('_______________________________________________')
             }
 //
 // QAUDIO DEVICE SETUP
@@ -313,12 +299,12 @@ MainView {
                   clickSound.stop()
                   clickSound.play()
                   Example.audioSetup()
-                  label8.text = "Setup and loaded QAudio to debug."
+                  label8.text = "Setup and loaded QAudio and debug log."
                   label9.text = "Play AlicePt1.ogg, 10:40 mins"
                 }
             }
 //
-// PLAY OGG FILE
+// PLAY/STOP OGG FILE
 //
             Label {
                 id: label9
@@ -327,45 +313,62 @@ MainView {
                   top: button8.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('press QAudio Setup to load file')
+                text: i18n.tr('press QAudio Setup to load file first')
             }
-            Button {
-                id: button9
-                Layout.alignment: Qt.AlignHCenter
+            // play/stop buttons row
+            Row {
+                id: qaudioRow
+                spacing: units.gu(2)
+                height: units.gu(6) // needs a height else 1px
                 anchors {
-                  top: label9.bottom
-                  topMargin: 8
+                    margins: units.gu(2)
+                    top: label9.bottom
+                    left: parent.left
+                    right: parent.right
                 }
-                text: i18n.tr('Play Audio')
-                color: UbuntuColors.slate
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  Example.playAlice()
-                  button9.color = UbuntuColors.green
-                  button10.color = UbuntuColors.slate
-                  label9.text = "Playing AlicePt1.ogg now..."
-                }
-            }
-            Button {
-                id: button10
                 Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: button9.bottom
-                  topMargin: 12
+
+                Button {
+                    id: button9
+                    anchors {
+                      top: label9.bottom
+                      left: qaudioRow.left
+                      topMargin: 8
+                    }
+                    text: i18n.tr('Play ogg Audio')
+                    color: UbuntuColors.slate
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      Example.playAlice()
+                      button9.color = UbuntuColors.green
+                      button10.color = UbuntuColors.slate
+                      label9.text = "Playing AlicePt1.ogg now..."
+                    }
                 }
-                text: i18n.tr('Stop Audio')
-                color: UbuntuColors.slate
-                onClicked: {
-                  clickSound.stop()
-                  clickSound.play()
-                  Example.stopAlice()
-                  button9.color = UbuntuColors.slate
-                  button10.color = UbuntuColors.green
-                  // this logic not good, needs a checkIfLoaded()
-                  label9.text = "Play AlicePt1.ogg, 10:40 mins"
+                Button {
+                    id: button10
+                    anchors {
+                      top: label9.bottom
+                      right: qaudioRow.right
+                      topMargin: 12
+                    }
+                    text: i18n.tr('Stop ogg Audio')
+                    color: UbuntuColors.slate
+                    onClicked: {
+                      clickSound.stop()
+                      clickSound.play()
+                      Example.stopAlice()
+                      button9.color = UbuntuColors.slate
+                      button10.color = UbuntuColors.green
+                      // this logic not good, needs a checkIfLoaded()
+                      label9.text = "Stopped AlicePt1.ogg"
+                    }
                 }
-            }
+            } // end row
+
+// add a qAudio volume slider here / playhead slider
+
 // add <hr /> thing here
             Label {
                 id: separator3
@@ -374,7 +377,7 @@ MainView {
                   top: button10.bottom
                   topMargin: 12
                 }
-                text: i18n.tr('__________________________________________')
+                text: i18n.tr('_______________________________________________')
             }
 //
 // CALL AUDIOGEN
@@ -386,7 +389,7 @@ MainView {
                   top: separator3.bottom
                   topMargin: 24
                 }
-                text: i18n.tr('press to toggle AudioGen')
+                text: i18n.tr('press to run AudioGen')
             }
             Button {
                 id: button11
@@ -395,16 +398,50 @@ MainView {
                   top: label11.bottom
                   topMargin: 8
                 }
-                text: i18n.tr('Toggle AudioGen')
+                text: i18n.tr('Run AudioGen')
                 color: UbuntuColors.slate
                 onClicked: {
                   clickSound.stop()
                   clickSound.play()
-                  Example.callAudioGen()
-                  button11.color = UbuntuColors.blue
-                  label11.text = "AudioGen toggled off/on..."
+                  Example.runAudioGen()
+                  button11.color = UbuntuColors.red
+                  button11.text = "Stop AudioGen"
+                  // logic state here too...
+                  // label11.text: button11.onClicked? "blah" : "Other blah"
+                  label11.text = "AudioGen running/stopped"
                 }
             }
-        }
-    }
-}
+            Label {
+                id: label12
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: button11.bottom
+                  topMargin: 24
+                }
+                text: i18n.tr('toggle pause AudioGen')
+            }
+            Button {
+                id: button12
+                Layout.alignment: Qt.AlignHCenter
+                anchors {
+                  top: label12.bottom
+                  topMargin: 8
+                }
+                text: i18n.tr('Pause AudioGen')
+                color: UbuntuColors.slate
+                onClicked: {
+                  clickSound.stop()
+                  clickSound.play()
+                  Example.toggleAudioGen()
+                  button12.color = UbuntuColors.blue
+                  button12.text = "Resume AudioGen"
+                  // logic state here
+                  label12.text = "AudioGen paused/resumed"
+                }
+            }
+
+// add QAudio volume slider here?
+
+        } // end ColumnLayout
+    } // end Page
+} // end MainView

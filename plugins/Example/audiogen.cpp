@@ -163,7 +163,7 @@ AudioGenTest::AudioGenTest()
       ,   m_buffer(BufferSize, 0)
 {
       //initializeWindow(); // THIS TO GO
-      initializeAudio();
+      //initializeAudio();
 }
 
 // THIS TO GO
@@ -301,16 +301,20 @@ void AudioGenTest::toggleMode() {
   }
 
 void AudioGenTest::toggleSuspendResume() {
+      qDebug() << "toggle AudioGen called.";
       if (m_audioOutput->state() == QAudio::SuspendedState) {
           m_audioOutput->resume();
           //m_suspendResumeButton->setText(tr(SUSPEND_LABEL));
-      } else if (m_audioOutput->state() == QAudio::ActiveState) {
+      }
+      else if (m_audioOutput->state() == QAudio::ActiveState) {
           m_audioOutput->suspend();
           //m_suspendResumeButton->setText(tr(RESUME_LABEL));
-      } else if (m_audioOutput->state() == QAudio::StoppedState) {
+      }
+      else if (m_audioOutput->state() == QAudio::StoppedState) {
           m_audioOutput->resume();
           //m_suspendResumeButton->setText(tr(SUSPEND_LABEL));
-      } else if (m_audioOutput->state() == QAudio::IdleState) {
+      }
+      else if (m_audioOutput->state() == QAudio::IdleState) {
           // no-op
       }
 }
@@ -318,7 +322,19 @@ void AudioGenTest::toggleSuspendResume() {
 void AudioGenTest::runAudioGenTest() {
     qDebug() << "runAudioGenTest called.";
     //ToneSampleRateHz += 100; // this is not accessible yet
-    volumeChanged(35); // set volume to half (value / 100 == 0 - 1)
-    toggleSuspendResume();
-    //initializeAudio(); // crashes after not many calls with pa_stream_writable_size() assert 's' fail
+    // check for already running, do not allow multiple instances or we can get harmonic distortion etc
+    if (m_audioOutput) {
+        qDebug() << "AudioGen already running.";
+        // stop it, and reset for possible change in vars
+        m_pushTimer->stop();
+        m_audioOutput->stop();
+        if (m_generator)
+            delete m_generator;
+        // add some Hz to check
+        ToneSampleRateHz += 100;
+    }
+    else {
+        initializeAudio();
+        volumeChanged(35); // set volume to half (value / 100 == 0 - 1)
+    }
 }

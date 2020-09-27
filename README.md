@@ -8,20 +8,23 @@ QTaudio testing with UI - work in progress
 Do not drive the handset speaker too loud.<br />
 Not sure of peak volume yet, nor of frequency response.<br/>
 Possible problematic frequency ~600 Hz at amplitude. <br />
-Currently assuming that 90% is a safe peak for most frequencies.
+Currently assuming that 90% is a safe peak for most frequencies.<br />
+Device now has S4 Mini (GT-I9195) speaker installed, so freq response no longer based on original PinePhone (1.2a).
 
-Version: 0.1.1
+Version: 0.1.2
 
-amixer volume and unmute for headphones and speakers is WORKING<br />
-amixer onboard mic1 and mic2 mute/unmute and pipe to headphones or speakers is WORKING
+amixer volume and unmute for headphones and speakers WORKING<br />
+amixer onboard mic1 and mic2 mute/unmute and pipe to headphones or speakers WORKING
 
 n.b. see Example Case below in Notes section
 
-Simple 6 button operation to switch with info text:
+Simple 10 button operation to switch with info text:
 - either headphone or speakers on with hardcoded volume set (80%)
 - unmute the handset or headset microphones
 - mute all microphones
 - QAudio device list debug print
+- load 10 min ogg file for playback
+- AudioGen for continous tone testing
 - Volume rocker also controls volume for Headphones (UI says Speakers)
 
 built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.<br />
@@ -39,13 +42,16 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 **CHANGES**
 
-- for next version 0.1.2
 - included Gutenberg Project audio file (~4mb) in assets folder
 - buttons make (bad) click sound
 - querying/playing local file using QMediaPlayer
 - playing file does not route audio to Headphones when switched
 - audio out only goes to whatever ouput set before playing file.
 - added a waveform generator to play a continuous tone, does switch outputs
+- replaced original handset speaker, now with different freq responses.
+- mic unmute now auto-switches output to ensure no feedback
+- mic unmute feedback protect can still be overrided with an output change
+- button row layout
 
 
 <br />
@@ -54,7 +60,8 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 - volume sliders in app and do some GUI already.<br />
 - different routing option buttons for phone calls etc.<br />
-- replace the fried handset speaker<br />
+- need to get current state at app start
+- need to update GUI at changes
 
 <br />
 

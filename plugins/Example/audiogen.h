@@ -89,8 +89,9 @@ class AudioGenTest: public QObject {
   public:
       AudioGenTest();
       ~AudioGenTest();
-      
+
       void runAudioGenTest();
+      void toggleSuspendResume();
 
   private:
       //void initializeWindow(); // THIS TO GO
@@ -121,7 +122,6 @@ class AudioGenTest: public QObject {
   private slots:
       void pushTimerExpired();
       void toggleMode();
-      void toggleSuspendResume();
       void deviceChanged(int index);
       void volumeChanged(int);
 };

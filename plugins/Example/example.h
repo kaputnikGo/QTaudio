@@ -50,7 +50,8 @@ class Example: public QObject {
     Q_INVOKABLE void playAlice();
     Q_INVOKABLE void stopAlice();
 
-    Q_INVOKABLE void callAudioGen();
+    Q_INVOKABLE void runAudioGen();
+    Q_INVOKABLE void toggleAudioGen();
     Q_INVOKABLE void destructor();
 
 

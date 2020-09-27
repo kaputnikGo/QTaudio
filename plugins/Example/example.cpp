@@ -225,6 +225,10 @@ void Example::playAlice() {
     qDebug() << "playAlice called, status: " << qMediaPlayer.mediaStatus(); // returns loadingMedia
     if (qMediaPlayer.mediaStatus() == QMediaPlayer::LoadingMedia) {
         qDebug() << "Check: Alice is loading, try play.";
+        // default vol = 100, set volume to 50, not logarithmic
+        if (qMediaPlayer.volume() == 100) {
+            qMediaPlayer.setVolume(50);
+        }
         qMediaPlayer.play();
     }
     else {
@@ -238,10 +242,14 @@ void Example::stopAlice() {
 
 /******************************************************************************/
 
-void Example::callAudioGen() {
-    qDebug() << "callAudioGen called...";
+void Example::runAudioGen() {
+    qDebug() << "runAudioGen called from qml";
     //AudioTest audioGenTest;
     audioGenTest.runAudioGenTest();
+}
+void Example::toggleAudioGen() {
+    qDebug() << "toggleAudioGen called from qml";
+    audioGenTest.toggleSuspendResume();
 }
 
 
