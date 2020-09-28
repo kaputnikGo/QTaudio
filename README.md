@@ -26,6 +26,7 @@ Simple 10 button operation to switch with info text:
 - load 10 min ogg file for playback
 - AudioGen for continous tone testing
 - Volume rocker also controls volume for Headphones (UI says Speakers)
+- does NOT in any way behave like a standard media player.
 
 built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.<br />
 OS: Ubuntu Touch Version 8
