@@ -1,6 +1,8 @@
 ### version 0.1.3
 - added CHANGELOG
 - added output volume slider (read only)
+- added volume slider for audioGen (not working yet)
+- clean up of layout qml
 
 
 ### version 0.1.2

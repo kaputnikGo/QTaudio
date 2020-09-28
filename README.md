@@ -8,10 +8,10 @@ QTaudio testing with UI - work in progress
 Do not drive the handset speaker too loud.<br />
 Not sure of peak volume yet, nor of frequency response.<br/>
 Possible problematic frequency ~600 Hz at amplitude. <br />
-Currently assuming that 90% is a safe peak for most frequencies.<br />
+Currently assuming that 80% is a safe peak for most frequencies.<br />
 Device now has S4 Mini (GT-I9195) speaker installed, so freq response no longer based on original PinePhone (1.2a).
 
-Version: 0.1.2
+Version: 0.1.3
 
 amixer volume and unmute for headphones and speakers WORKING<br />
 amixer onboard mic1 and mic2 mute/unmute and pipe to headphones or speakers WORKING
@@ -42,8 +42,7 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 
 **CHANGES**
 
-- added CHANGELOG
-- 
+- added CHANGELOG, so look there.
 
 
 <br />

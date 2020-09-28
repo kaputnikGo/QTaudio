@@ -53,6 +53,7 @@ MainView {
 
         ColumnLayout {
             spacing: units.gu(2)
+            Layout.alignment: Qt.AlignHCenter
             anchors {
                 margins: units.gu(2)
                 top: header.bottom
@@ -74,7 +75,7 @@ MainView {
                 id: label1
                 anchors {
                   top: parent.top
-                  topMargin: 24
+                  topMargin: units.gu(2)
                 }
                 Layout.alignment: Qt.AlignHCenter
                 text: i18n.tr('Switch between headphones or speaker')
@@ -85,20 +86,18 @@ MainView {
                 id: outputRow
                 spacing: units.gu(2)
                 height: units.gu(6) // needs a height else 1px
+                width: parent.width // match parent
                 anchors {
                     margins: units.gu(2)
-                    top: label1.bottom
-                    left: parent.left
-                    right: parent.right
                 }
                 Layout.alignment: Qt.AlignHCenter
 
                 Button {
                     id: button1
+                    Layout.alignment: Qt.AlignLeft
                     anchors {
-                        top: label1.bottom
-                        left: outputRow.left
-                        topMargin: 8
+                        top: outputRow.top
+                        topMargin: units.gu(2)
                     }
                     text: i18n.tr('Headphones')
                     color: UbuntuColors.graphite
@@ -108,16 +107,15 @@ MainView {
                       label1.text = "headphones unmute vol 80%, speakers vol 2%."
                       button1.color = UbuntuColors.green
                       button3.color = UbuntuColors.graphite
-                      //label2.text = "current headphone volume: " + Example.getHeadphoneVol()
                       outputSlider.value = Example.getHeadphoneVol()
                     }
                 }
                 Button {
                     id: button3
+                    Layout.alignment: Qt.AlignRight
                     anchors {
-                      top: label1.bottom
-                      right: outputRow.right
-                      topMargin: 8
+                      top: outputRow.top
+                      topMargin: units.gu(2)
                     }
                     text: i18n.tr('Speakers')
                     color: UbuntuColors.graphite
@@ -127,7 +125,6 @@ MainView {
                       label1.text = "headphones vol 2%, speakers vol 80%."
                       button3.color = UbuntuColors.green
                       button1.color = UbuntuColors.graphite
-                      //label2.text = "current speaker volume: " + Example.getSpeakerVol()
                       outputSlider.value = Example.getSpeakerVol()
                     }
                 }
@@ -137,8 +134,8 @@ MainView {
             Slider {
                 id: outputSlider
                 anchors {
-                  top: button3.bottom
-                  topMargin: 8
+                  topMargin: units.gu(2)
+                  bottomMargin: units.gu(2)
                 }
                 Layout.alignment: Qt.AlignHCenter
                 function formatValue(v) {
@@ -150,76 +147,38 @@ MainView {
                 value: 0.0
                 live: true
             }
-
-// add a <hr /> type thing here
-            Label {
-                id: separator1
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: outputSlider.bottom
-                  topMargin: 12
-                }
-                text: i18n.tr('_______________________________________________')
-            }
 //
 // ALL MIC MUTE
 //
-            Label {
-                id: label5
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: separator1.bottom
-                  topMargin: 24
-                }
-                text: i18n.tr('Press to mute all mics')
-            }
             Button {
                 id: button5
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: label5.bottom
-                  topMargin: 8
+                  top: outputSlider.bottom
+                  topMargin: units.gu(2)
                 }
-                text: i18n.tr('Mic mute')
+                text: i18n.tr('Mute all Mics')
                 color: UbuntuColors.graphite
                 onClicked: {
                   clickSound.stop()
                   clickSound.play()
                   Example.micMute()
-                  label5.text = "all mics muted."
                   button5.color = UbuntuColors.red
                   button6.color = UbuntuColors.graphite
                   button7.color = UbuntuColors.graphite
-                  // clear previous display
-                  label6.text = "Press to unmute Mic1 Handset"
-                  label7.text = "Press to unmute Mic2 Headset"
-
                 }
             }
 //
 // MIC UNMUTE
 //
-
-            Label {
-                id: label6
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: button5.bottom
-                  topMargin: 24
-                }
-                text: i18n.tr('Press to unmute either mic.')
-            }
-
         // make MIC buttons in a row
             Row {
                 id: unmuteRow
                 spacing: units.gu(2)
                 height: units.gu(4) // needs a height else 1px
+                width: parent.width // match parent
                 anchors {
                     margins: units.gu(2)
-                    top: label6.bottom
-                    left: parent.left
-                    right: parent.right
                 }
                 Layout.alignment: Qt.AlignHCenter
 
@@ -228,8 +187,7 @@ MainView {
                     id: button6
                     Layout.alignment: Qt.AlignHCenter
                     anchors {
-                      top: label6.bottom
-                      topMargin: 8
+                      top: unmuteRow.top
                     }
                     text: i18n.tr('Mic1 Handset unmute')
                     color: UbuntuColors.graphite
@@ -238,7 +196,7 @@ MainView {
                       clickSound.play()
                       // toggle Headphones
                       button1.clicked()
-                      label6.text = "Mic1 Handset unmuted."
+                      button7.text = "Mic1 Handset unmuted."
                       button6.color = UbuntuColors.green
                       button5.color = UbuntuColors.graphite
                       // lastly:
@@ -251,8 +209,7 @@ MainView {
                     id: button7
                     Layout.alignment: Qt.AlignHCenter
                     anchors {
-                      top: label7.bottom
-                      topMargin: 8
+                      top: unmuteRow.top
                     }
                     text: i18n.tr('Mic2 Headset unmute')
                     color: UbuntuColors.graphite
@@ -261,8 +218,7 @@ MainView {
                       clickSound.play()
                       // toggle Speakers
                       button3.clicked()
-                      Example.mic2Unmute()
-                      label6.text = "Mic2 Headset unmuted."
+                      button7.text = "Mic2 Headset unmuted."
                       button7.color = UbuntuColors.green
                       button5.color = UbuntuColors.graphite
                       // lastly:
@@ -278,8 +234,7 @@ MainView {
                 id: separator2
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: button7.bottom
-                  topMargin: 2
+                  topMargin: units.gu(2)
                 }
                 text: i18n.tr('_______________________________________________')
             }
@@ -291,16 +246,16 @@ MainView {
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
                   top: separator2.bottom
-                  topMargin: 24
+                  topMargin: units.gu(2)
                 }
-                text: i18n.tr('Setup and load QAudio')
+                text: i18n.tr('press QAudio Setup to load file first')
             }
             Button {
                 id: button8
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
                   top: label8.bottom
-                  topMargin: 8
+                  topMargin: units.gu(2)
                 }
                 text: i18n.tr('QAudio Setup')
                 color: UbuntuColors.orange
@@ -308,41 +263,28 @@ MainView {
                   clickSound.stop()
                   clickSound.play()
                   Example.audioSetup()
-                  label8.text = "Setup and loaded QAudio and debug log."
-                  label9.text = "Play AlicePt1.ogg, 10:40 mins"
+                  label8.text = "Play AlicePt1.ogg, 10:40 mins"
                 }
             }
 //
 // PLAY/STOP OGG FILE
 //
-            Label {
-                id: label9
-                Layout.alignment: Qt.AlignHCenter
-                anchors {
-                  top: button8.bottom
-                  topMargin: 24
-                }
-                text: i18n.tr('press QAudio Setup to load file first')
-            }
             // play/stop buttons row
             Row {
                 id: qaudioRow
                 spacing: units.gu(2)
                 height: units.gu(6) // needs a height else 1px
+                width: parent.width // match parent
                 anchors {
                     margins: units.gu(2)
-                    top: label9.bottom
-                    left: parent.left
-                    right: parent.right
                 }
                 Layout.alignment: Qt.AlignHCenter
 
                 Button {
                     id: button9
+                    Layout.alignment: Qt.AlignLeft
                     anchors {
-                      top: label9.bottom
-                      left: qaudioRow.left
-                      topMargin: 8
+                      top: qaudioRow.top
                     }
                     text: i18n.tr('Play ogg Audio')
                     color: UbuntuColors.slate
@@ -352,15 +294,14 @@ MainView {
                       Example.playAlice()
                       button9.color = UbuntuColors.green
                       button10.color = UbuntuColors.slate
-                      label9.text = "Playing AlicePt1.ogg now..."
+                      label8.text = "Playing AlicePt1.ogg now..."
                     }
                 }
                 Button {
                     id: button10
+                    Layout.alignment: Qt.AlignRight
                     anchors {
-                      top: label9.bottom
-                      right: qaudioRow.right
-                      topMargin: 12
+                      top: qaudioRow.top
                     }
                     text: i18n.tr('Stop ogg Audio')
                     color: UbuntuColors.slate
@@ -371,79 +312,55 @@ MainView {
                       button9.color = UbuntuColors.slate
                       button10.color = UbuntuColors.green
                       // this logic not good, needs a checkIfLoaded()
-                      label9.text = "Stopped AlicePt1.ogg"
+                      label8.text = "Stopped AlicePt1.ogg"
                     }
                 }
             } // end row
-
-// add a qAudio volume slider here / playhead slider
-
-// add <hr /> thing here
-            Label {
-                id: separator3
-                Layout.alignment: Qt.AlignHCenter
+// add a qAudio playhead slider
+            Slider {
+                id: playheadSlider
                 anchors {
-                  top: button10.bottom
-                  topMargin: 12
+                  topMargin: units.gu(2)
                 }
-                text: i18n.tr('_______________________________________________')
+                Layout.alignment: Qt.AlignHCenter
+                function formatValue(v) {
+                  return v.toFixed(0)
+                }
+                minimumValue: 0
+                maximumValue: 100
+                stepSize: 1
+                value: 0
+                live: true
             }
 //
 // CALL AUDIOGEN
 //
-            Row {
-                id: audiogenLabelRow
-                spacing: units.gu(2)
-                height: units.gu(4) // needs a height else 1px
+            Label {
+                id: label11
+                Layout.alignment: Qt.AlignHCenter
                 anchors {
-                    margins: units.gu(2)
-                    top: separator3.bottom
-                    left: parent.left
-                    right: parent.right
+                  topMargin: units.gu(2)
                 }
-                Label {
-                    id: label11
-                    Layout.alignment: Qt.AlignHCenter
-                    anchors {
-                      top: separator3.bottom
-                      left: audiogenLabelRow.left
-                      topMargin: 24
-                    }
-                    text: i18n.tr('press to run AudioGen')
-                }
-                Label {
-                    id: label12
-                    Layout.alignment: Qt.AlignHCenter
-                    anchors {
-                      top: button11.bottom
-                      right: audiogenLabelRow.right
-                      topMargin: 24
-                    }
-                    text: i18n.tr('toggle pause AudioGen')
-                }
-
-            }// end audiogenLabelRow
+                text: i18n.tr("press to run AudioGen tone at " + Example.getCurrentToneFreq())
+            }
 
             Row {
                 id: audiogenRow
                 spacing: units.gu(2)
                 height: units.gu(4) // needs a height else 1px
+                width: parent.width // match parent
                 anchors {
                     margins: units.gu(2)
-                    top: label11.bottom
-                    left: parent.left
-                    right: parent.right
                 }
                 Layout.alignment: Qt.AlignHCenter
+
                 Button {
                     id: button11
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignLeft
                     anchors {
-                      top: label11.bottom
-                      left: audiogenRow.left
-                      topMargin: 8
+                      top: audiogenRow.top
                     }
-                    text: i18n.tr('Run AudioGen')
+                    text: i18n.tr("Run AudioGen")
                     color: UbuntuColors.slate
                     onClicked: {
                       clickSound.stop()
@@ -451,29 +368,23 @@ MainView {
                       Example.runAudioGen()
                       button11.color = UbuntuColors.red
                       button11.text = "Restart +100hz"
-                      // logic state here too...
-                      // label11.text: button11.onClicked? "blah" : "Other blah"
                       label11.text = "AudioGen running at " + Example.getCurrentToneFreq()
                     }
                 }
                 Button {
                     id: button12
-                    Layout.alignment: Qt.AlignHCenter
+                    Layout.alignment: Qt.AlignRight
                     anchors {
-                      top: label12.bottom
-                      right: audiogenRow.right
-                      topMargin: 8
+                      top: audiogenRow.top
                     }
-                    text: i18n.tr('Pause AudioGen')
+                    text: i18n.tr("Pause AudioGen")
                     color: UbuntuColors.slate
                     onClicked: {
                       clickSound.stop()
                       clickSound.play()
-                      Example.toggleAudioGen()
                       button12.color = UbuntuColors.blue
                       button12.text = "Resume AudioGen"
-                      // logic state here
-                      label12.text = "AudioGen pause/resume"
+                      Example.toggleAudioGen()
                     }
                 }
             }// end audiogenRow
@@ -482,8 +393,7 @@ MainView {
             Slider {
                 id: audiogenSlider
                 anchors {
-                  top: label12.bottom
-                  topMargin: 8
+                  topMargin: units.gu(2)
                 }
                 Layout.alignment: Qt.AlignHCenter
                 function formatValue(v) {
@@ -494,6 +404,12 @@ MainView {
                 stepSize: 1
                 value: 50
                 live: true
+            }
+            // expander item, required to force layout to specified height and not auto fill screen.
+            Item {
+              //Layout.fillWidth: true
+              // or
+              Layout.fillHeight: true
             }
         } // end ColumnLayout
     } // end Page

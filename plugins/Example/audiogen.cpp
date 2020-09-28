@@ -303,20 +303,25 @@ void AudioGenTest::toggleMode() {
 
 void AudioGenTest::toggleSuspendResume() {
       qDebug() << "toggle AudioGen called.";
-      if (m_audioOutput->state() == QAudio::SuspendedState) {
-          m_audioOutput->resume();
-          //m_suspendResumeButton->setText(tr(SUSPEND_LABEL));
+      if (m_audioOutput != 0) {
+          if (m_audioOutput->state() == QAudio::SuspendedState) {
+              m_audioOutput->resume();
+              //m_suspendResumeButton->setText(tr(SUSPEND_LABEL));
+          }
+          else if (m_audioOutput->state() == QAudio::ActiveState) {
+              m_audioOutput->suspend();
+              //m_suspendResumeButton->setText(tr(RESUME_LABEL));
+          }
+          else if (m_audioOutput->state() == QAudio::StoppedState) {
+              m_audioOutput->resume();
+              //m_suspendResumeButton->setText(tr(SUSPEND_LABEL));
+          }
+          else if (m_audioOutput->state() == QAudio::IdleState) {
+              // no-op
+          }
       }
-      else if (m_audioOutput->state() == QAudio::ActiveState) {
-          m_audioOutput->suspend();
-          //m_suspendResumeButton->setText(tr(RESUME_LABEL));
-      }
-      else if (m_audioOutput->state() == QAudio::StoppedState) {
-          m_audioOutput->resume();
-          //m_suspendResumeButton->setText(tr(SUSPEND_LABEL));
-      }
-      else if (m_audioOutput->state() == QAudio::IdleState) {
-          // no-op
+      else {
+          qDebug() << "toggleSuspendResume called before init.";
       }
 }
 
