@@ -3,6 +3,9 @@
 - added output volume slider (read only)
 - added volume slider for audioGen (not working yet)
 - clean up of layout qml
+- 2 output sliders (headphone, speaker)
+- get init audio state to GUI
+- set output script now turns on and off as well
 
 
 ### version 0.1.2

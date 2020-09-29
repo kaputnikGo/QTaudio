@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qtaudio.kaputnikgo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-28 02:37+0000\n"
+"POT-Creation-Date: 2020-09-29 02:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,58 +21,58 @@ msgstr ""
 msgid "QTaudio"
 msgstr ""
 
-#: ../qml/Main.qml:82
+#: ../qml/Main.qml:105
 msgid "Switch between headphones or speaker"
 msgstr ""
 
-#: ../qml/Main.qml:103
+#: ../qml/Main.qml:126
 msgid "Headphones"
 msgstr ""
 
-#: ../qml/Main.qml:121
+#: ../qml/Main.qml:146
 msgid "Speakers"
 msgstr ""
 
-#: ../qml/Main.qml:161
+#: ../qml/Main.qml:203
 msgid "Mute all Mics"
 msgstr ""
 
-#: ../qml/Main.qml:193
+#: ../qml/Main.qml:235
 msgid "Mic1 Handset unmute"
 msgstr ""
 
-#: ../qml/Main.qml:215
+#: ../qml/Main.qml:257
 msgid "Mic2 Headset unmute"
 msgstr ""
 
-#: ../qml/Main.qml:240
+#: ../qml/Main.qml:282
 msgid "_______________________________________________"
 msgstr ""
 
-#: ../qml/Main.qml:252
+#: ../qml/Main.qml:294
 msgid "press QAudio Setup to load file first"
 msgstr ""
 
-#: ../qml/Main.qml:261
+#: ../qml/Main.qml:303
 msgid "QAudio Setup"
 msgstr ""
 
-#: ../qml/Main.qml:290
+#: ../qml/Main.qml:332
 msgid "Play ogg Audio"
 msgstr ""
 
-#: ../qml/Main.qml:307
+#: ../qml/Main.qml:349
 msgid "Stop ogg Audio"
 msgstr ""
 
-#: ../qml/Main.qml:345
+#: ../qml/Main.qml:387
 msgid "press to run AudioGen tone at "
 msgstr ""
 
-#: ../qml/Main.qml:364
+#: ../qml/Main.qml:406
 msgid "Run AudioGen"
 msgstr ""
 
-#: ../qml/Main.qml:381
+#: ../qml/Main.qml:423
 msgid "Pause AudioGen"
 msgstr ""

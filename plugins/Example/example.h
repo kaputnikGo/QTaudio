@@ -33,6 +33,10 @@ class Example: public QObject {
     Example();
     ~Example() = default;
 
+    Q_INVOKABLE void getInitState();
+    Q_INVOKABLE QString getSpeakerState();
+    Q_INVOKABLE QString getHeadphoneState();
+
     Q_INVOKABLE void headphones();
     Q_INVOKABLE void readHeadphoneVol();
     Q_INVOKABLE QString getHeadphoneVol();
@@ -68,6 +72,7 @@ class Example: public QObject {
     void onMicMuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onMic1UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onMic2UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void onInitStateFinished(int exitCode, QProcess::ExitStatus exitStatus);
 
   signals:
     void headphoneVolChanged();
@@ -82,7 +87,11 @@ class Example: public QObject {
     QProcess micMuteProcess;
     QProcess mic1UnmuteProcess;
     QProcess mic2UnmuteProcess;
+    QProcess initStateProcess;
 
+    QString initStateRead;
+    QString speakerState;
+    QString headphoneState;
     QString headphoneVolRead;
     QString speakerVolRead;
     QString micMutesRead;

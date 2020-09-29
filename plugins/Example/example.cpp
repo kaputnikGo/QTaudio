@@ -18,6 +18,7 @@
 #include <QAudio>
 #include <QAudioDeviceInfo>
 #include <QMediaPlayer>
+#include <QString>
 
 #include "example.h"
 #include "audiogen.h"
@@ -32,9 +33,13 @@ Example::Example() :
   micMuteProcess(),
   mic1UnmuteProcess(),
   mic2UnmuteProcess(),
+  initStateProcess(),
   headphoneVolRead('0'),
   speakerVolRead('0'),
   micMutesRead('0'),
+  initStateRead('0'),
+  speakerState('0'),
+  headphoneState('0'),
   qMediaPlayer(),
   audioGenTest()
 {
@@ -45,6 +50,7 @@ Example::Example() :
     connect(&micMuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMicMuteFinished(int, QProcess::ExitStatus)));
     connect(&mic1UnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMic1UnmuteFinished(int, QProcess::ExitStatus)));
     connect(&mic2UnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMic2UnmuteFinished(int, QProcess::ExitStatus)));
+    connect(&initStateProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onInitStateFinished(int, QProcess::ExitStatus)));
 }
 
 // TODO :: cldean up this mess :)
@@ -57,7 +63,8 @@ void Example::speakers() {
     speakerProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speakers.sh");
     speakerProcess.waitForFinished();
     speakerProcess.close();
-    //readSpeakerVol();
+    // load the volume
+    readSpeakerVol();
 }
 void Example::readSpeakerVol() {
     qDebug() << "speaker vol read";
@@ -70,7 +77,6 @@ void Example::readSpeakerVol() {
     qDebug() << speakerVolRead;
 }
 QString Example::getSpeakerVol() {
-    speakers();
     qDebug() << "getSpeakerVol: " << speakerVolRead;
     qDebug() << "speaker vol read";
     speakerVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/speaker_vol.sh");
@@ -108,7 +114,8 @@ void Example::headphones() {
     headphoneProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphones.sh");
     headphoneProcess.waitForFinished();
     headphoneProcess.close();
-    //readHeadphoneVol();
+    // load the volume
+    readHeadphoneVol();
 }
 void Example::readHeadphoneVol() {
     qDebug() << "headphone vol read";
@@ -121,7 +128,6 @@ void Example::readHeadphoneVol() {
     qDebug() << headphoneVolRead;
 }
 QString Example::getHeadphoneVol() {
-    headphones();
     qDebug() << "getHeadphoneVol: " << headphoneVolRead;
     qDebug() << "headphone vol read";
     headphoneVolProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/headphone_vol.sh");
@@ -197,19 +203,6 @@ void Example::audioSetup() {
     for (const QAudioDeviceInfo &deviceInfo : deviceInfos) {
       qDebug() << "Device name: " << deviceInfo.deviceName();
     }
-/*
-prints:
-      audioSetup get device info:
-      Device name:  "default"
-      Device name:  "pulse"
-      Device name:  "sysdefault:CARD=sun50ia64audio"
-      Device name:  "dmix:CARD=sun50ia64audio,DEV=0"
-      Device name:  "dsnoop:CARD=sun50ia64audio,DEV=0"
-      Device name:  "hw:CARD=sun50ia64audio,DEV=0"
-      Device name:  "plughw:CARD=sun50ia64audio,DEV=0"
-      Device name:  "alsa_output.platform-sound.HiFi__hw_sun50ia64audio__sink"
-      Device name:  "sink.fake.sco"
-*/
     // test the QMediaPlayer object with current return values in rem
     // no media is loaded so values will reflect a default state
     qDebug() << "qmediaplayer invoke";
@@ -253,6 +246,41 @@ void Example::toggleAudioGen() {
 }
 int Example::getCurrentToneFreq() {
     audioGenTest.getCurrentToneFreq();
+}
+
+/******************************************************************************/
+
+  // get app init state of headphones/handset on, current volume
+void Example::getInitState() {
+    // call the init_state.sh script (is a bash not sh)
+    // returns string "on+off"
+    qDebug() << "initState called.";
+    initStateProcess.start("bash /opt/click.ubuntu.com/qtaudio.kaputnikgo/current/scripts/init_state.sh");
+    initStateProcess.waitForFinished();
+    initStateRead = QString(initStateProcess.readAllStandardOutput());
+    initStateProcess.close();
+    // has 2 parts with sentinel "on+off"
+    // speakerState = first part
+    QStringList list_str = initStateRead.split("+");
+    speakerState = list_str.first();
+    // headphoneState = second part
+    headphoneState = list_str.back();
+    // strip /n
+    headphoneState.chop(1);
+    qDebug() << "initState read is Spkr: " << speakerState << " Hdph: " << headphoneState;
+
+}
+
+void Example::onInitStateFinished(int exitCode, QProcess::ExitStatus exitStatus) {
+    qDebug() << "initState read finished";
+    qDebug() << "exit code" << exitCode << "exit status" << exitStatus;
+}
+
+QString Example::getSpeakerState() {
+    return speakerState;
+}
+QString Example::getHeadphoneState() {
+    return headphoneState;
 }
 
 /******************************************************************************/

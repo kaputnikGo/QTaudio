@@ -19,6 +19,7 @@ amixer onboard mic1 and mic2 mute/unmute and pipe to headphones or speakers WORK
 n.b. see Example Case below in Notes section
 
 Simple 10 button operation to switch with info text:
+- does NOT in any way behave like a standard media player.
 - either headphone or speakers on with hardcoded volume set (80%)
 - unmute the handset or headset microphones
 - mute all microphones
@@ -26,7 +27,7 @@ Simple 10 button operation to switch with info text:
 - load 10 min ogg file for playback
 - AudioGen for continous tone testing
 - Volume rocker also controls volume for Headphones (UI says Speakers)
-- does NOT in any way behave like a standard media player.
+- init state output read and set GUI
 
 built for Pinephone Community Edition (PostmarketOS) hardware with UBports installed on eMMC.<br />
 OS: Ubuntu Touch Version 8

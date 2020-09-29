@@ -62,6 +62,30 @@ MainView {
                 bottom: parent.bottom
                 topMargin: 18
             }
+
+            Component.onCompleted: {
+                // note: this is init state,
+                // both outputs can be on/off at same time
+                Example.getInitState()
+                // set output button colours and get vol
+                if (Example.getSpeakerState() == "on") {
+                    speakerSlider.value = Example.getSpeakerVol()
+                    buttonSpeaker.color = UbuntuColors.green
+                }
+                else {
+                    // speaker is off
+                    buttonSpeaker.color = UbuntuColors.red
+                }
+                //
+                if (Example.getHeadphoneState() == "on") {
+                    headphoneSlider.value = Example.getHeadphoneVol()
+                    buttonHeadphone.color = UbuntuColors.green
+                }
+                else {
+                    // headphone is off
+                    buttonHeadphone.color = UbuntuColors.red
+                }
+            }
             /*
             // expander item
             Item {
@@ -93,7 +117,7 @@ MainView {
                 Layout.alignment: Qt.AlignHCenter
 
                 Button {
-                    id: button1
+                    id: buttonHeadphone
                     Layout.alignment: Qt.AlignLeft
                     anchors {
                         top: outputRow.top
@@ -104,14 +128,16 @@ MainView {
                     onClicked: {
                       clickSound.stop()
                       clickSound.play()
+                      Example.headphones()
                       label1.text = "headphones unmute vol 80%, speakers vol 2%."
-                      button1.color = UbuntuColors.green
-                      button3.color = UbuntuColors.graphite
-                      outputSlider.value = Example.getHeadphoneVol()
+                      buttonHeadphone.color = UbuntuColors.green
+                      headphoneSlider.value = Example.getHeadphoneVol()
+                      buttonSpeaker.color = UbuntuColors.red
+                      speakerSlider.value = Example.getSpeakerVol()
                     }
                 }
                 Button {
-                    id: button3
+                    id: buttonSpeaker
                     Layout.alignment: Qt.AlignRight
                     anchors {
                       top: outputRow.top
@@ -122,17 +148,35 @@ MainView {
                     onClicked: {
                       clickSound.stop()
                       clickSound.play()
+                      Example.speakers()
                       label1.text = "headphones vol 2%, speakers vol 80%."
-                      button3.color = UbuntuColors.green
-                      button1.color = UbuntuColors.graphite
-                      outputSlider.value = Example.getSpeakerVol()
+                      buttonSpeaker.color = UbuntuColors.green
+                      speakerSlider.value = Example.getSpeakerVol()
+                      buttonHeadphone.color = UbuntuColors.red
+                      headphoneSlider.value = Example.getHeadphoneVol()
                     }
                 }
             }// end buttons row
 
-// DISPLAY VOLUME
+// DISPLAY SPEAKER VOLUME
             Slider {
-                id: outputSlider
+                id: speakerSlider
+                anchors {
+                  topMargin: units.gu(2)
+                  bottomMargin: units.gu(2)
+                }
+                Layout.alignment: Qt.AlignHCenter
+                function formatValue(v) {
+                  return v.toFixed(0)
+                }
+                minimumValue: 0
+                maximumValue: 100
+                stepSize: 1
+                value: 0.0
+                live: true
+            }
+            Slider {
+                id: headphoneSlider
                 anchors {
                   topMargin: units.gu(2)
                   bottomMargin: units.gu(2)
@@ -154,7 +198,6 @@ MainView {
                 id: button5
                 Layout.alignment: Qt.AlignHCenter
                 anchors {
-                  top: outputSlider.bottom
                   topMargin: units.gu(2)
                 }
                 text: i18n.tr('Mute all Mics')
