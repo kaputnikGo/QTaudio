@@ -337,7 +337,7 @@ MainView {
                       Example.playAlice()
                       button9.color = UbuntuColors.green
                       button10.color = UbuntuColors.slate
-                      label8.text = "Playing AlicePt1.ogg now..."
+                      label8.text = "Playing AlicePt1.ogg now: " + Example.getDuration()
                     }
                 }
                 Button {
@@ -362,6 +362,7 @@ MainView {
 // add a qAudio playhead slider
             Slider {
                 id: playheadSlider
+                objectName: 'playheadSlider'
                 anchors {
                   topMargin: units.gu(2)
                 }
@@ -370,10 +371,22 @@ MainView {
                   return v.toFixed(0)
                 }
                 minimumValue: 0
-                maximumValue: 100
-                stepSize: 1
-                value: 0
+                maximumValue: 100 //Example.qMediaPlayer.duration || 1
+                //stepSize: 1
+                // working !!
+                value: Example.getPlayhead() //Example.qMediaPlayer.position
+                // tracking
                 live: true
+                Connections {
+                    target: Example
+
+                    onPlayheadChanged: {
+                      playheadSlider.value = Example.getPlayhead()
+                      playheadSlider.maximumValue = Example.getDuration() || 1
+                      label8.text = "playheadChanged: " + Example.getPlayhead()
+                    }
+
+                }
             }
 //
 // CALL AUDIOGEN

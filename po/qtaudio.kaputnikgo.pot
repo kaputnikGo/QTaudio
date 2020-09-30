@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qtaudio.kaputnikgo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-29 02:58+0000\n"
+"POT-Creation-Date: 2020-09-30 03:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -65,14 +65,14 @@ msgstr ""
 msgid "Stop ogg Audio"
 msgstr ""
 
-#: ../qml/Main.qml:387
+#: ../qml/Main.qml:400
 msgid "press to run AudioGen tone at "
 msgstr ""
 
-#: ../qml/Main.qml:406
+#: ../qml/Main.qml:419
 msgid "Run AudioGen"
 msgstr ""
 
-#: ../qml/Main.qml:423
+#: ../qml/Main.qml:436
 msgid "Pause AudioGen"
 msgstr ""

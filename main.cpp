@@ -29,6 +29,9 @@ int main(int argc, char *argv[])
 
     QQuickView *view = new QQuickView();
     view->setSource(QUrl("qrc:/Main.qml"));
+
+    QObject *playheadObject = view->findChild<QObject*>("playheadSlider");
+
     view->setResizeMode(QQuickView::SizeRootObjectToView);
     view->show();
 

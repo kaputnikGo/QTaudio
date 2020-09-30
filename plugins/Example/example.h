@@ -25,9 +25,11 @@
 
 class Example: public QObject {
     Q_OBJECT
+
     Q_PROPERTY(QString headphoneVolRead READ getHeadphoneVol WRITE setHeadphoneVol NOTIFY headphoneVolChanged)
     Q_PROPERTY(QString speakerVolRead READ getSpeakerVol WRITE setSpeakerVol NOTIFY speakerVolChanged)
     Q_PROPERTY(QString micMutesRead READ getMicMutes WRITE setMicMutes NOTIFY micMutesChanged)
+    Q_PROPERTY(qint64 playheadRead READ getPlayhead WRITE setPlayhead NOTIFY playheadChanged)
 
   public:
     Example();
@@ -54,6 +56,9 @@ class Example: public QObject {
     Q_INVOKABLE void playAlice();
     Q_INVOKABLE void stopAlice();
 
+    Q_INVOKABLE qint64 getPlayhead();
+    Q_INVOKABLE qint64 getDuration();
+
     Q_INVOKABLE void runAudioGen();
     Q_INVOKABLE void toggleAudioGen();
     Q_INVOKABLE int getCurrentToneFreq();
@@ -63,6 +68,9 @@ class Example: public QObject {
     void setHeadphoneVol(const QString &t);
     void setSpeakerVol(const QString &t);
     void setMicMutes(const QString &t);
+    void setPlayhead(qint64 val);
+
+    QMediaPlayer qMediaPlayer;
 
   private Q_SLOTS:
     void onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -73,11 +81,14 @@ class Example: public QObject {
     void onMic1UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onMic2UnmuteFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void onInitStateFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void positionChanged(qint64 position);
+    void durationChanged(qint64 duration);
 
   signals:
     void headphoneVolChanged();
     void speakerVolChanged();
     void micMutesChanged();
+    void playheadChanged();
 
   private:
     QProcess headphoneProcess;
@@ -96,7 +107,9 @@ class Example: public QObject {
     QString speakerVolRead;
     QString micMutesRead;
 
-    QMediaPlayer qMediaPlayer;
+    qint64 playheadRead;
+
+    //QMediaPlayer qMediaPlayer;
     AudioGenTest audioGenTest;
 
 };

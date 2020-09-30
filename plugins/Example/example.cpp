@@ -40,6 +40,7 @@ Example::Example() :
   initStateRead('0'),
   speakerState('0'),
   headphoneState('0'),
+  playheadRead('0'),
   qMediaPlayer(),
   audioGenTest()
 {
@@ -51,6 +52,8 @@ Example::Example() :
     connect(&mic1UnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMic1UnmuteFinished(int, QProcess::ExitStatus)));
     connect(&mic2UnmuteProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onMic2UnmuteFinished(int, QProcess::ExitStatus)));
     connect(&initStateProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(onInitStateFinished(int, QProcess::ExitStatus)));
+    connect(&qMediaPlayer, &QMediaPlayer::positionChanged, this, &Example::positionChanged);
+    connect(&qMediaPlayer, &QMediaPlayer::durationChanged, this, &Example::durationChanged);
 }
 
 // TODO :: cldean up this mess :)
@@ -212,6 +215,10 @@ void Example::audioSetup() {
     qDebug() << "audio role: " << qMediaPlayer.audioRole(); // MusicRole
     // looks for "file://" + "yourfileyouwanttoplay.mp3"
     qMediaPlayer.setMedia(QUrl::fromLocalFile(QStringLiteral("/opt/click.ubuntu.com/qtaudio.kaputnikgo/current/assets/AlicePt1.ogg"))); // working
+
+    // set the playheadSlider maximumValue of duration / 1000
+    // playheadSlider->setRange(0, qMediaPlayer.duration() / 1000);
+
 }
 void Example::playAlice() {
     // check for qMediaPlayer.mediaStatus() == QMediaPlayer::LoadedMedia
@@ -232,6 +239,60 @@ void Example::stopAlice() {
     qDebug() << "stopAlice called, status: " << qMediaPlayer.mediaStatus(); // returns
     qMediaPlayer.stop();
 }
+
+//  qMediaPlayer.positionChanged.connect(positionChanged)
+// send positionChanged to qml view?
+
+qint64 Example::getPlayhead() {
+    // do some checks first
+    return qMediaPlayer.position() / 1000;
+}
+
+void Example::setPlayhead(qint64 val) {
+    // not yet
+
+    //playheadSlider.setTracking(false); // or live: false
+    //playheadSlider->setValue(qMediaPLayer.position());
+/*
+    playheadSlider->setTracking(false);
+    //playheadSlider->live(false);
+    if (p != 0) {
+      playheadSlider->setValue(p / 1000);
+    }
+    playheadSlider->setTracking(true);
+    // push it to a var in qml
+*/
+    // emit signal of change
+    //playheadChanged();
+}
+
+void Example::positionChanged(qint64 position) {
+    // gets mediaplayer position, update slider.value
+    //qDebug() << "playheadChanged position: " << position; // 1059, 2109, 3166, 4178, 5183, etc
+    //playheadSlider->setValue(position);
+    playheadRead = position / 1000;
+    playheadChanged();
+}
+void Example::durationChanged(qint64 duration) {
+    // file length has been loaded, in ms so / 1000 for seconds etc.
+    qDebug() << "durationChanged duration: " << duration; // 640520
+    /*
+    playheadSlider->setRange(0, duration);
+    playheadSlider->setEnabled(duration > 0);
+    playheadSlider->setPageStep(duration / 10);
+    */
+}
+
+qint64 Example::getDuration() {
+    //QObject *childObject = object->findChild<QObject*>("playheadSlider");
+    //qDebug() << "playheadObject: " << playheadObject.value();
+    return qMediaPlayer.duration() / 1000;
+}
+/*
+void Example::playheadChanged() {
+   //
+}
+*/
 
 /******************************************************************************/
 
