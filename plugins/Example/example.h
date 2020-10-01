@@ -57,6 +57,7 @@ class Example: public QObject {
     Q_INVOKABLE void stopAlice();
 
     Q_INVOKABLE qint64 getPlayhead();
+    Q_INVOKABLE QString getPlayheadText();
     Q_INVOKABLE qint64 getDuration();
 
     Q_INVOKABLE void runAudioGen();

@@ -56,6 +56,7 @@ $ clickable --arch arm64 --ssh [ipaddr] log
 - need to get current state at app start
 - need to update GUI at changes
 - ogg playback currently cannot resume, nor play again after stop or end
+- add record audio and some fft display ie frequency spectrum
 
 <br />
 

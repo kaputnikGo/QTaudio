@@ -6,6 +6,7 @@ set(
     plugin.cpp
     example.cpp
     audiogen.cpp
+    recorder.cpp
 )
 
 set(CMAKE_AUTOMOC ON)

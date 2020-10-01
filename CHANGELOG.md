@@ -1,11 +1,17 @@
 ### version 0.1.3
 - added CHANGELOG
-- added output volume slider (read only)
+- added output volume sliders read only
 - added volume slider for audioGen (not working yet)
 - clean up of layout qml
 - 2 output sliders (headphone, speaker)
 - get init audio state to GUI
 - set output script now turns on and off as well
+- added playhead slider read only
+- labels for vol sliders
+- add ActionBar menu (weird)
+- add BottomEdge gesture slide thing
+- About page, Record page
+- adding record page audio input
 
 
 ### version 0.1.2

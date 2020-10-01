@@ -19,6 +19,7 @@
 #include <QAudioDeviceInfo>
 #include <QMediaPlayer>
 #include <QString>
+#include <QTime>
 
 #include "example.h"
 #include "audiogen.h"
@@ -92,7 +93,7 @@ QString Example::getSpeakerVol() {
     return speakerVolRead;
 }
 void Example::setSpeakerVol(const QString &t) {
-    // check t i sin range and is number
+    // check t is in range and is number
     if (t != speakerVolRead) {
         speakerVolRead = t;
         emit speakerVolChanged();
@@ -206,7 +207,6 @@ void Example::audioSetup() {
     for (const QAudioDeviceInfo &deviceInfo : deviceInfos) {
       qDebug() << "Device name: " << deviceInfo.deviceName();
     }
-    // test the QMediaPlayer object with current return values in rem
     // no media is loaded so values will reflect a default state
     qDebug() << "qmediaplayer invoke";
     qDebug() << "isAudioAvailable: " << qMediaPlayer.isAudioAvailable(); // false
@@ -215,10 +215,6 @@ void Example::audioSetup() {
     qDebug() << "audio role: " << qMediaPlayer.audioRole(); // MusicRole
     // looks for "file://" + "yourfileyouwanttoplay.mp3"
     qMediaPlayer.setMedia(QUrl::fromLocalFile(QStringLiteral("/opt/click.ubuntu.com/qtaudio.kaputnikgo/current/assets/AlicePt1.ogg"))); // working
-
-    // set the playheadSlider maximumValue of duration / 1000
-    // playheadSlider->setRange(0, qMediaPlayer.duration() / 1000);
-
 }
 void Example::playAlice() {
     // check for qMediaPlayer.mediaStatus() == QMediaPlayer::LoadedMedia
@@ -240,24 +236,38 @@ void Example::stopAlice() {
     qMediaPlayer.stop();
 }
 
-//  qMediaPlayer.positionChanged.connect(positionChanged)
-// send positionChanged to qml view?
-
 qint64 Example::getPlayhead() {
-    // do some checks first
+    // do some checks first, convert to mins:secs
     return qMediaPlayer.position() / 1000;
+}
+
+QString Example::getPlayheadText() {
+    // this is slow, mainly every second updates.
+    QString tStr;
+    qint64 currentInfo = qMediaPlayer.position(); // / 1000;
+    // QTime (int h, int m, int s = 0, int ms = 0)
+    // should be no hours info.
+    if (currentInfo > 0) {
+        QTime currentTime(
+          (currentInfo / 3600) % 60,
+          (currentInfo / 60) % 60,
+          currentInfo % 60,
+          (currentInfo * 1000) % 1000
+        );
+        QString format = "mm:ss";
+        tStr = currentTime.toString(format);
+    }
+    return tStr;
 }
 
 void Example::setPlayhead(qint64 val) {
     // not yet
 
-    //playheadSlider.setTracking(false); // or live: false
-    //playheadSlider->setValue(qMediaPLayer.position());
 /*
     playheadSlider->setTracking(false);
     //playheadSlider->live(false);
-    if (p != 0) {
-      playheadSlider->setValue(p / 1000);
+    if (val != 0) {
+      playheadSlider->setValue(val / 1000);
     }
     playheadSlider->setTracking(true);
     // push it to a var in qml
@@ -267,25 +277,17 @@ void Example::setPlayhead(qint64 val) {
 }
 
 void Example::positionChanged(qint64 position) {
-    // gets mediaplayer position, update slider.value
-    //qDebug() << "playheadChanged position: " << position; // 1059, 2109, 3166, 4178, 5183, etc
-    //playheadSlider->setValue(position);
+    // gets mediaplayer position signal updates to this class
     playheadRead = position / 1000;
     playheadChanged();
 }
 void Example::durationChanged(qint64 duration) {
     // file length has been loaded, in ms so / 1000 for seconds etc.
+    // gets called multiple times.
     qDebug() << "durationChanged duration: " << duration; // 640520
-    /*
-    playheadSlider->setRange(0, duration);
-    playheadSlider->setEnabled(duration > 0);
-    playheadSlider->setPageStep(duration / 10);
-    */
 }
 
 qint64 Example::getDuration() {
-    //QObject *childObject = object->findChild<QObject*>("playheadSlider");
-    //qDebug() << "playheadObject: " << playheadObject.value();
     return qMediaPlayer.duration() / 1000;
 }
 /*
@@ -311,7 +313,6 @@ int Example::getCurrentToneFreq() {
 
 /******************************************************************************/
 
-  // get app init state of headphones/handset on, current volume
 void Example::getInitState() {
     // call the init_state.sh script (is a bash not sh)
     // returns string "on+off"
@@ -320,7 +321,6 @@ void Example::getInitState() {
     initStateProcess.waitForFinished();
     initStateRead = QString(initStateProcess.readAllStandardOutput());
     initStateProcess.close();
-    // has 2 parts with sentinel "on+off"
     // speakerState = first part
     QStringList list_str = initStateRead.split("+");
     speakerState = list_str.first();

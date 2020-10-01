@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: qtaudio.kaputnikgo\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-30 03:11+0000\n"
+"POT-Creation-Date: 2020-10-01 08:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,62 +17,82 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../qml/Main.qml:51 QTaudio.desktop.in.h:1
-msgid "QTaudio"
+#: ../qml/About.qml:49
+msgid "QTaudio about"
 msgstr ""
 
-#: ../qml/Main.qml:105
+#: ../qml/About.qml:91
+msgid "About page of some stuff"
+msgstr ""
+
+#: ../qml/Main.qml:55
+msgid "QTaudio checker"
+msgstr ""
+
+#: ../qml/Main.qml:128
 msgid "Switch between headphones or speaker"
 msgstr ""
 
-#: ../qml/Main.qml:126
+#: ../qml/Main.qml:149
 msgid "Headphones"
 msgstr ""
 
-#: ../qml/Main.qml:146
+#: ../qml/Main.qml:169
 msgid "Speakers"
 msgstr ""
 
-#: ../qml/Main.qml:203
+#: ../qml/Main.qml:246
 msgid "Mute all Mics"
 msgstr ""
 
-#: ../qml/Main.qml:235
+#: ../qml/Main.qml:278
 msgid "Mic1 Handset unmute"
 msgstr ""
 
-#: ../qml/Main.qml:257
+#: ../qml/Main.qml:300
 msgid "Mic2 Headset unmute"
 msgstr ""
 
-#: ../qml/Main.qml:282
+#: ../qml/Main.qml:325
 msgid "_______________________________________________"
 msgstr ""
 
-#: ../qml/Main.qml:294
+#: ../qml/Main.qml:337
 msgid "press QAudio Setup to load file first"
 msgstr ""
 
-#: ../qml/Main.qml:303
+#: ../qml/Main.qml:346
 msgid "QAudio Setup"
 msgstr ""
 
-#: ../qml/Main.qml:332
+#: ../qml/Main.qml:375
 msgid "Play ogg Audio"
 msgstr ""
 
-#: ../qml/Main.qml:349
+#: ../qml/Main.qml:392
 msgid "Stop ogg Audio"
 msgstr ""
 
-#: ../qml/Main.qml:400
+#: ../qml/Main.qml:452
 msgid "press to run AudioGen tone at "
 msgstr ""
 
-#: ../qml/Main.qml:419
+#: ../qml/Main.qml:471
 msgid "Run AudioGen"
 msgstr ""
 
-#: ../qml/Main.qml:436
+#: ../qml/Main.qml:488
 msgid "Pause AudioGen"
+msgstr ""
+
+#: ../qml/Record.qml:49
+msgid "QTaudio record"
+msgstr ""
+
+#: ../qml/Record.qml:91
+msgid "Try some record audio and fft"
+msgstr ""
+
+#: QTaudio.desktop.in.h:1
+msgid "QTaudio"
 msgstr ""
