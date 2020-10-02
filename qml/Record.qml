@@ -21,7 +21,7 @@ import QtQuick.Layouts 1.3
 import Qt.labs.settings 1.0
 import QtMultimedia 5.4
 
-//import Example 1.0
+import Example 1.0
 
 MainView {
     id: rootRecord
@@ -46,7 +46,7 @@ MainView {
             header: PageHeader {
                 id: headerRecord
                 width: parent.width // match parent
-                title: i18n.tr('QTaudio record')
+                title: i18n.tr('QTaudio audio view')
 
                 ActionBar {
                     anchors {
@@ -103,8 +103,51 @@ MainView {
                     //  \n for new lines.
                     //  Use \\ to get a \ in the string
                     // beware of the Atom Editor retaining spaces for QML rendering, hence far-left justify:
-                    text: "Maybe an fft window for frequency response. \n needs a mic/headphone switch \n and an fft library."
+                    text: "Maybe an fft window for frequency response. \n need an fft library."
                 }
+
+                Row {
+                    id: recordRow
+                    spacing: units.gu(2)
+                    height: units.gu(4) // needs a height else 1px
+                    width: parent.width // match parent
+                    anchors {
+                        margins: units.gu(2)
+                    }
+                    Button {
+                        id: buttonArm
+                        Layout.alignment: Qt.AlignLeft
+                        anchors {
+                          top: recordRow.top
+                        }
+                        text: i18n.tr("Arm Display")
+                        color: UbuntuColors.slate
+                        onClicked: {
+                          clickSound.stop()
+                          clickSound.play()
+                          buttonArm.color = UbuntuColors.green
+                          buttonArm.text = "ARMED"
+
+                        }
+                    }
+                    Button {
+                        id: buttonRecord
+                        Layout.alignment: Qt.AlignRight
+                        anchors {
+                          top: recordRow.top
+                        }
+                        text: i18n.tr("Display")
+                        color: UbuntuColors.slate
+                        onClicked: {
+                          clickSound.stop()
+                          clickSound.play()
+                          buttonArm.color = UbuntuColors.red
+                          buttonArm.text = "DISPLAYING"
+
+                        }
+                    }
+                }// end recordRow
+
                 // expander item, required to force layout to specified height and not auto fill screen.
                 Item {
                   //Layout.fillWidth: true

@@ -313,6 +313,10 @@ int Example::getCurrentToneFreq() {
 
 /******************************************************************************/
 
+
+
+/******************************************************************************/
+
 void Example::getInitState() {
     // call the init_state.sh script (is a bash not sh)
     // returns string "on+off"

@@ -65,13 +65,10 @@ class Example: public QObject {
     Q_INVOKABLE int getCurrentToneFreq();
     Q_INVOKABLE void destructor();
 
-
     void setHeadphoneVol(const QString &t);
     void setSpeakerVol(const QString &t);
     void setMicMutes(const QString &t);
     void setPlayhead(qint64 val);
-
-    QMediaPlayer qMediaPlayer;
 
   private Q_SLOTS:
     void onHeadphoneFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -107,12 +104,10 @@ class Example: public QObject {
     QString headphoneVolRead;
     QString speakerVolRead;
     QString micMutesRead;
-
     qint64 playheadRead;
 
-    //QMediaPlayer qMediaPlayer;
+    QMediaPlayer qMediaPlayer;
     AudioGenTest audioGenTest;
-
 };
 
 #endif

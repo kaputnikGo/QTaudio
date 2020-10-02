@@ -2,7 +2,8 @@
     "template": "unconfined",
     "policy_groups": [
       "audio",
-      "microphone"
+      "microphone",
+      "keep-display-on"
     ],
     "policy_version": 16.04
 }

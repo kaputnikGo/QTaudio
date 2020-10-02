@@ -10,8 +10,8 @@
 - labels for vol sliders
 - add ActionBar menu (weird)
 - add BottomEdge gesture slide thing
-- About page, Record page
-- adding record page audio input
+- About page, Record/spectrogram page
+- apparmor policy "keep-display-on"
 
 
 ### version 0.1.2
