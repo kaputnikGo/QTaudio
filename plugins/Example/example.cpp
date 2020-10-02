@@ -303,12 +303,14 @@ void Example::runAudioGen() {
     //AudioTest audioGenTest;
     audioGenTest.runAudioGenTest();
 }
-void Example::toggleAudioGen() {
-    qDebug() << "toggleAudioGen called from qml";
-    audioGenTest.toggleSuspendResume();
-}
 int Example::getCurrentToneFreq() {
     audioGenTest.getCurrentToneFreq();
+}
+
+void Example::toggleAudioGen() {
+    qDebug() << "toggleAudioGen testAudioInput called from qml";
+    audioGenTest.testAudioInput();
+    // do something funner
 }
 
 /******************************************************************************/

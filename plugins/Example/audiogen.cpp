@@ -40,6 +40,8 @@
 
 #include <QAudioDeviceInfo>
 #include <QAudioOutput>
+#include <QAudioInput>
+#include <QTimer>
 #include <QDebug>
 #include <qmath.h>
 #include <qendian.h>
@@ -58,10 +60,7 @@ const int DataSampleRateHz = 44100;
 const int BufferSize      = 32768;
 //int ToneSampleRateHz = 500;
 
-Generator::Generator(const QAudioFormat &format,
-                       qint64 durationUs,
-                       int sampleRate,
-                       QObject *parent)
+Generator::Generator(const QAudioFormat &format, qint64 durationUs, int sampleRate, QObject *parent)
       :   QIODevice(parent)
       ,   m_pos(0)
 {
@@ -155,13 +154,16 @@ AudioGenTest::AudioGenTest()
       //,   m_modeButton(0)
       //,   m_suspendResumeButton(0)
       //,   m_deviceBox(0)
-      ,   m_device(QAudioDeviceInfo::defaultOutputDevice())
+      ,   m_deviceInfo(QAudioDeviceInfo::defaultOutputDevice())
+      ,   m_deviceInfoIn(QAudioDeviceInfo::defaultInputDevice())
       ,   m_generator(0)
       ,   m_audioOutput(0)
-      ,   m_output(0)
-      ,   m_pullMode(true)
+      ,   m_audioInput(0)
+      ,   m_outputDevice(0)
+      ,   m_pullMode(false)
       ,   m_buffer(BufferSize, 0)
       ,   ToneSampleRateHz(200)
+      ,   destinationFile(0)
 {
       //initializeWindow(); // THIS TO GO
       //initializeAudio();
@@ -217,23 +219,23 @@ void AudioTest::initializeWindow() {
 void AudioGenTest::initializeAudio() {
       connect(m_pushTimer, SIGNAL(timeout()), SLOT(pushTimerExpired()));
       qDebug() << "init - connect";
-      m_format.setSampleRate(DataSampleRateHz);
-      m_format.setChannelCount(1);
-      m_format.setSampleSize(16);
-      m_format.setCodec("audio/pcm");
-      m_format.setByteOrder(QAudioFormat::LittleEndian);
-      m_format.setSampleType(QAudioFormat::SignedInt);
+      m_formatOut.setSampleRate(DataSampleRateHz);
+      m_formatOut.setChannelCount(1);
+      m_formatOut.setSampleSize(16);
+      m_formatOut.setCodec("audio/pcm");
+      m_formatOut.setByteOrder(QAudioFormat::LittleEndian);
+      m_formatOut.setSampleType(QAudioFormat::SignedInt);
       qDebug() << "init - mformat.";
-      QAudioDeviceInfo info(m_device);
-      if (!info.isFormatSupported(m_format)) {
+      QAudioDeviceInfo info(m_deviceInfo);
+      if (!info.isFormatSupported(m_formatOut)) {
           qWarning() << "Default format not supported - trying to use nearest";
-          m_format = info.nearestFormat(m_format);
+          m_formatOut = info.nearestFormat(m_formatOut);
       }
       qDebug() << "init - device info.";
       if (m_generator)
           delete m_generator;
       // here be the freq: ToneSampleRateHz
-      m_generator = new Generator(m_format, DurationSeconds*1000000, ToneSampleRateHz, this);
+      m_generator = new Generator(m_formatOut, DurationSeconds*1000000, ToneSampleRateHz, this);
       qDebug() << "init - mgenerator.";
       createAudioOutput();
 }
@@ -241,7 +243,7 @@ void AudioGenTest::initializeAudio() {
 void AudioGenTest::createAudioOutput() {
       delete m_audioOutput;
       m_audioOutput = 0;
-      m_audioOutput = new QAudioOutput(m_device, m_format, this);
+      m_audioOutput = new QAudioOutput(m_deviceInfo, m_formatOut, this);
       volumeChanged(50);
       m_generator->start();
       m_audioOutput->start(m_generator);
@@ -258,7 +260,7 @@ void AudioGenTest::deviceChanged(int index) {
       m_audioOutput->stop();
       m_audioOutput->disconnect(this);
       //m_device = m_deviceBox->itemData(index).value<QAudioDeviceInfo>();
-      m_device = m_device;
+      m_deviceInfo = m_deviceInfo;
       initializeAudio();
 }
 
@@ -273,7 +275,7 @@ void AudioGenTest::pushTimerExpired() {
           while (chunks) {
              const qint64 len = m_generator->read(m_buffer.data(), m_audioOutput->periodSize());
              if (len)
-                 m_output->write(m_buffer.data(), len);
+                 m_outputDevice->write(m_buffer.data(), len);
              if (len != m_audioOutput->periodSize())
                  break;
              --chunks;
@@ -285,19 +287,20 @@ void AudioGenTest::toggleMode() {
       m_pushTimer->stop();
       m_audioOutput->stop();
 
+      // default is true
       if (m_pullMode) {
           //switch to push mode (periodically push to QAudioOutput using a timer)
           //m_modeButton->setText(tr(PULL_MODE_LABEL));
-          m_output = m_audioOutput->start();
+          m_outputDevice = m_audioOutput->start();
           m_pullMode = false;
           m_pushTimer->start(20);
-      } else {
+      }
+      else {
           //switch to pull mode (QAudioOutput pulls from Generator as needed)
           //m_modeButton->setText(tr(PUSH_MODE_LABEL));
           m_pullMode = true;
           m_audioOutput->start(m_generator);
       }
-
       //m_suspendResumeButton->setText(tr(SUSPEND_LABEL));
   }
 
@@ -349,4 +352,43 @@ void AudioGenTest::runAudioGenTest() {
 
 int AudioGenTest::getCurrentToneFreq() {
     return ToneSampleRateHz;
+}
+
+void AudioGenTest::testAudioInput() {
+    qDebug() << "testAudioInput...";
+
+    destinationFile.setFileName("/tmp/test.raw");
+    destinationFile.open( QIODevice::WriteOnly | QIODevice::Truncate );
+    qDebug() << "Set file complete. set formatIn";
+
+    // then init the m_formatIn
+    m_formatIn.setSampleRate(8000); // low to test
+    m_formatIn.setChannelCount(1); // mic is mono
+    m_formatIn.setSampleSize(16);
+    m_formatIn.setSampleType(QAudioFormat::SignedInt);
+    m_formatIn.setByteOrder(QAudioFormat::LittleEndian);
+    m_formatIn.setCodec("audio/pcm");
+
+    QAudioDeviceInfo info(m_deviceInfoIn);
+    if (!info.isFormatSupported(m_formatIn)) {
+        qWarning() << "Default format not supported - trying to use nearest";
+        m_formatIn = info.nearestFormat(m_formatIn);
+    }
+    qDebug() << "init - device info.";
+
+    m_audioInput = new QAudioInput(m_deviceInfoIn, m_formatIn, this);
+    qDebug() << "end testAudioInput call state: " << m_audioInput->state();
+
+    // test record for 3000ms
+    // currently stuck with a : "Stream error: Access denied"
+    QTimer::singleShot(3000, this, SLOT(stopRecording()));
+    //m_audioInput->start(&destinationFile);
+    m_audioInput->start();
+}
+
+void AudioGenTest::stopRecording() {
+    m_audioInput->stop();
+    destinationFile.close();
+    qDebug() << "stopRecording called.";
+    //delete m_audioInput;
 }

@@ -3,6 +3,8 @@
     "policy_groups": [
       "audio",
       "microphone",
+      "content_exchange",
+      "content_exchange_source",
       "keep-display-on"
     ],
     "policy_version": 16.04

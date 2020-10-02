@@ -281,7 +281,7 @@ MainView {
                           clickSound.stop()
                           clickSound.play()
                           // toggle Headphones
-                          button1.clicked()
+                          buttonHeadphone.clicked()
                           button7.text = "Mic1 Handset unmuted."
                           button6.color = UbuntuColors.green
                           button5.color = UbuntuColors.graphite
@@ -303,7 +303,7 @@ MainView {
                           clickSound.stop()
                           clickSound.play()
                           // toggle Speakers
-                          button3.clicked()
+                          buttonSpeaker.clicked()
                           button7.text = "Mic2 Headset unmuted."
                           button7.color = UbuntuColors.green
                           button5.color = UbuntuColors.graphite
@@ -485,13 +485,13 @@ MainView {
                         anchors {
                           top: audiogenRow.top
                         }
-                        text: i18n.tr("Pause AudioGen")
+                        text: i18n.tr("input AudioGen")
                         color: UbuntuColors.slate
                         onClicked: {
                           clickSound.stop()
                           clickSound.play()
                           button12.color = UbuntuColors.blue
-                          button12.text = "Resume AudioGen"
+                          button12.text = "input AudioGen"
                           Example.toggleAudioGen()
                         }
                     }

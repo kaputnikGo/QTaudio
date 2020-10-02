@@ -141,8 +141,8 @@ MainView {
                         onClicked: {
                           clickSound.stop()
                           clickSound.play()
-                          buttonArm.color = UbuntuColors.red
-                          buttonArm.text = "DISPLAYING"
+                          buttonRecord.color = UbuntuColors.red
+                          buttonRecord.text = "DISPLAYING"
 
                         }
                     }

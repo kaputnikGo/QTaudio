@@ -43,10 +43,12 @@
 
 #include <math.h>
 #include <QAudioOutput>
+#include <QAudioInput>
 #include <QByteArray>
 #include <QIODevice>
 #include <QObject>
 #include <QTimer>
+#include <QFile>
 /*
 #include <QComboBox> // no
 #include <QLabel> // no
@@ -93,6 +95,7 @@ class AudioGenTest: public QObject {
       void runAudioGenTest();
       void toggleSuspendResume();
       int getCurrentToneFreq();
+      void testAudioInput();
 
   private:
       //void initializeWindow(); // THIS TO GO
@@ -112,11 +115,15 @@ class AudioGenTest: public QObject {
       QSlider *m_volumeSlider;
       */
 
-      QAudioDeviceInfo m_device;
+      QAudioDeviceInfo m_deviceInfo;
+      QAudioDeviceInfo m_deviceInfoIn;
       Generator *m_generator;
       QAudioOutput *m_audioOutput;
-      QIODevice *m_output; // not owned
-      QAudioFormat m_format;
+      QAudioInput *m_audioInput;
+      QIODevice *m_outputDevice; // not owned
+      QAudioFormat m_formatOut;
+      QAudioFormat m_formatIn;
+      QFile destinationFile;
 
       bool m_pullMode;
       QByteArray m_buffer;
@@ -126,6 +133,7 @@ class AudioGenTest: public QObject {
       void toggleMode();
       void deviceChanged(int index);
       void volumeChanged(int);
+      void stopRecording();
 };
 
 #endif // AUDIOGEN_H
