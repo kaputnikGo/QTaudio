@@ -357,7 +357,7 @@ int AudioGenTest::getCurrentToneFreq() {
 void AudioGenTest::testAudioInput() {
     qDebug() << "testAudioInput...";
 
-    destinationFile.setFileName("/tmp/test.raw");
+    destinationFile.setFileName("/dev/null"); // test a null file
     destinationFile.open( QIODevice::WriteOnly | QIODevice::Truncate );
     qDebug() << "Set file complete. set formatIn";
 
@@ -382,8 +382,8 @@ void AudioGenTest::testAudioInput() {
     // test record for 3000ms
     // currently stuck with a : "Stream error: Access denied"
     QTimer::singleShot(3000, this, SLOT(stopRecording()));
-    //m_audioInput->start(&destinationFile);
-    m_audioInput->start();
+    m_audioInput->start(&destinationFile);
+    //m_audioInput->start();
 }
 
 void AudioGenTest::stopRecording() {

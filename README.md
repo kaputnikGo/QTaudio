@@ -18,6 +18,9 @@ amixer onboard mic1 and mic2 mute/unmute and pipe to headphones or speakers WORK
 
 n.b. see Example Case below in Notes section
 
+n.b. apparmor policy "unconfined" does not seem to work for pulseaudio microphone access<br />
+it does work for QTaudio to vibrator via amixer.
+
 Simple 10 button operation to switch with info text:
 - does NOT in any way behave like a standard media player.
 - either headphone or speakers on with hardcoded volume set (80%)

@@ -1,0 +1,82 @@
+#
+# Attempting with this file to force qtaudio access to mic via pulse deferral - not currently working
+#   - hard to determine if perms are working correctly as normal openstore app installs with mic
+#     access are also failing to get mic access.
+#   - additional entry below of audio via pulse is taken from morph-browser apparmor policy
+#   - currently webapp invokes a perms popup for mic access but it fails to do anthing
+#   - $ sudo service apparmor status reports: apparmor stop/waiting
+#     $ sudo service apparmor start reports: apparmor stop/waiting
+#     $ service --status-all reports: [ + ] apparmor
+#
+# This file is installed in and as /home/phablet/Templates/qtaudio-kaputnikgo-apparmor-policy
+# required $ sudo apt-get install apparmor-utils
+# using apparmor version 2.10.95-0ubuntu2.11
+#
+# Example usage for an unconfined app 'appname'. This provides no protection
+# or configuration.
+# $ aa-easyprof --template="/home/phablet/Templates/qtaudio-kaputnikgo-apparmor-policy" \
+#               --profile-name=qtaudio.kaputnikgo \
+#               "/opt/click.ubuntu.com/qtaudio.kaputnikgo/**"
+#
+###ENDUSAGE###
+# vim:syntax=apparmor
+
+#include <tunables/global>
+
+# Define vars with unconfined since autopilot rules may reference them
+###VAR###
+
+# TODO: when v3 userspace lands, use:
+# ###PROFILEATTACH### (unconfined) {}
+
+# v2 compatible wildly permissive profile
+###PROFILEATTACH### (attach_disconnected) {
+  capability,
+  network,
+  / rwkl,
+  /** rwlkm,
+  /** pix,
+
+  mount,
+  remount,
+  umount,
+  dbus,
+  signal,
+  ptrace,
+  unix,
+
+# Description: Can access the microphone
+ # Usage: common
+ # Don't include the audio abstraction and enforce use of pulse instead
+ /etc/pulse/ r,
+ /etc/pulse/* r,
+ /{run,dev}/shm/                    r,  # could allow enumerating apps
+ owner /{run,dev}/shm/pulse-shm*    rk,
+ owner /{run,dev}/shm/pulse-shm*     w,
+ owner @{HOME}/.pulse-cookie        rk,
+ owner @{HOME}/.pulse/              r,
+ owner @{HOME}/.pulse/*             rk,
+ owner /{,var/}run/user/*/pulse/       r,
+ owner /{,var/}run/user/*/pulse/       w,   # shouldn't be needed, but rmdir fail otherwise
+ owner /{,var/}run/user/*/pulse/native rwk, # cli and dbus-socket should not be
+                                            # used by confined apps
+ owner @{HOME}/.config/pulse/cookie rk,
+
+ # QAudioRecorder needs this. We might have to allow this later, but for now
+ # just silence the denial
+
+ # gstreamer - should these be application specific?
+ owner @{HOME}/.gstreamer*/registry.*.bin* r,
+ deny @{HOME}/.gstreamer*/registry.*.bin* w,
+ deny @{HOME}/.gstreamer*/                w,
+ # gstreamer writes JIT compiled code in the form of orcexec.* files. Various
+ # locations are tried so silence the ones we won't permit anyway
+ deny /tmp/orcexec* w,
+ deny /{,var/}run/user/*/orcexec* w,
+ deny @{HOME}/orcexec* w,
+
+ # Force the use of pulseaudio and silence any denials for ALSA
+ deny /usr/share/alsa/alsa.conf r,
+ deny /dev/snd/ r,
+ deny /dev/snd/* r,
+}
